@@ -1,0 +1,1385 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Explora los períodos geológicos del Mesozoico: Triásico, Jurásico y Cretácico">
+    <link rel="icon" type="image/png" href="images/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="images/favicon.svg" />
+    <link rel="shortcut icon" href="images/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png" />
+    <link rel="manifest" href="images/site.webmanifest" />
+    <title>Períodos Geológicos - DinoWiki</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+                footer {
+            background: linear-gradient(135deg, #1a2a1a 0%, #0f1f0f 100%);
+            color: #d4e8d4;
+            padding: 4rem 2rem 1.5rem;
+            margin-top: 5rem;
+            border-top: 4px solid #7fb77f;
+            box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+
+        /* Patrón decorativo de fondo del footer */
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><path d="M0 0 L50 50 L100 0" stroke="rgba(127,183,127,0.05)" fill="none"/></svg>');
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-section h3 {
+            color: #7fb77f;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            font-family: Georgia, serif;
+            position: relative;
+            padding-bottom: 0.8rem;
+        }
+
+        /* Línea decorativa debajo de los títulos del footer */
+        .footer-section h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(90deg, #7fb77f, transparent);
+        }
+
+        .footer-section p {
+            color: #d4e8d4;
+            line-height: 1.9;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        /* IMPORTANTE: Enlaces del footer con efecto hover mejorado */
+        .footer-section a {
+            color: #a8d5a8;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: block;
+            margin-bottom: 0.7rem;
+            padding-left: 0;
+        }
+
+        .footer-section a:hover {
+            color: #7fb77f;
+            padding-left: 10px;
+            text-shadow: 0 0 10px rgba(127, 183, 127, 0.5);
+        }
+
+        /* Redes sociales con efectos avanzados */
+        .social-links {
+            display: flex;
+            gap: 1.2rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .social-links a {
+            width: 50px;
+            height: 50px;
+            background: rgba(127, 183, 127, 0.15);
+            border: 2px solid #7fb77f;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-size: 1.3rem;
+            margin: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Efecto de relleno circular en hover de redes sociales */
+        .social-links a::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: #7fb77f;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.4s ease, height 0.4s ease;
+            z-index: -1;
+        }
+
+        .social-links a:hover::before {
+            width: 100%;
+            height: 100%;
+        }
+
+        .social-links a:hover {
+            color: #1a2a1a;
+            transform: translateY(-5px) scale(1.15);
+            box-shadow: 0 8px 20px rgba(127, 183, 127, 0.5);
+            border-color: #5a9e5a;
+        }
+
+        /* Sección inferior del footer con enlaces legales */
+        .footer-bottom {
+            border-top: 1px solid rgba(127, 183, 127, 0.3);
+            padding-top: 2rem;
+            margin-top: 2rem;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-bottom p {
+            color: #a8d5a8;
+            font-size: 0.95rem;
+            margin: 0.7rem 0;
+        }
+
+        /* Enlaces legales en el footer */
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: #a8d5a8;
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+        }
+
+        .footer-links a:hover {
+            color: #7fb77f;
+            background: rgba(127, 183, 127, 0.1);
+            text-decoration: none;
+        }
+        /* ===== FIN DEL FOOTER MEJORADO ===== */
+
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--light-green), var(--primary-green));
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            z-index: 999;
+        }
+
+        .scroll-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scroll-top:hover {
+            transform: translateY(-5px) scale(1.1);
+        }
+
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+
+            .nav-container {
+                flex-direction: column;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease;
+            }
+
+            .nav-container.active {
+                max-height: 500px;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .site-title {
+                font-size: 1.5rem;
+            }
+
+            .section {
+                padding: 2rem 1.5rem;
+            }
+
+            /* Footer responsivo */
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .footer-links {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-green: #5a9e5a;
+            --dark-green: #3d5a3d;
+            --light-green: #7fb77f;
+            --bg-green: #e8f5e8;
+            --triassic-red: #c94545;
+            --jurassic-gold: #d4a02d;
+            --cretaceous-green: #5a9e5a;
+            --shadow-main: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2c5f2d 0%, #1a3a1b 100%);
+            background-attachment: fixed;
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(127, 183, 127, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(127, 183, 127, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .banner {
+            background: linear-gradient(135deg, rgba(61, 90, 61, 0.98) 0%, rgba(90, 124, 90, 0.98) 100%);
+            backdrop-filter: blur(15px);
+            padding: 1.2rem 0;
+            box-shadow: var(--shadow-main);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 3px solid var(--light-green);
+        }
+
+        .banner-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            animation: slideInLeft 0.8s ease-out;
+        }
+
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .logo {
+            width: 90px;
+            height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
+        }
+
+        .logo:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .site-title {
+            color: #fff;
+            font-size: 2.5rem;
+            font-weight: bold;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.7);
+            letter-spacing: 2px;
+        }
+
+        .site-subtitle {
+            color: #d4e8d4;
+            font-size: 1rem;
+            font-weight: 300;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+        }
+
+        .sound-toggle {
+            background: rgba(127, 183, 127, 0.2);
+            border: 2px solid #7fb77f;
+            color: #fff;
+            padding: 0.7rem 1.2rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+        }
+
+        .sound-toggle:hover {
+            background: #7fb77f;
+            transform: scale(1.05);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 6px;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger span {
+            width: 30px;
+            height: 3px;
+            background: linear-gradient(90deg, #fff, #a8d5a8);
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(9px, 9px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(9px, -9px);
+        }
+
+        nav {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            padding: 1.2rem 0;
+            animation: slideDown 0.5s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            padding: 0 2rem;
+            transition: max-height 0.3s ease;
+        }
+
+        nav a {
+            color: #3d5a3d;
+            text-decoration: none;
+            padding: 0.8rem 2rem;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 1.05rem;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #f0f7f0, #e8f5e8);
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        nav a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+            transition: left 0.5s ease;
+        }
+
+        nav a:hover::before {
+            left: 100%;
+        }
+
+        nav a:hover, nav a.active {
+            background: linear-gradient(135deg, #7fb77f, #5a9e5a);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(127, 183, 127, 0.4);
+        }
+
+        .hero {
+            max-width: 1200px;
+            margin: 3rem auto 2rem;
+            padding: 3rem 2rem;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            color: #fff;
+            text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.7);
+            margin-bottom: 1rem;
+            font-family: Georgia, serif;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.9);
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        main {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .timeline-overview {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow-main);
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        .timeline-overview h2 {
+            color: var(--dark-green);
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            font-family: Georgia, serif;
+        }
+
+        .timeline-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .stat-box {
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #f0f7f0, #e8f5e8);
+            border-radius: 15px;
+            border-left: 5px solid var(--light-green);
+        }
+
+        .stat-box h3 {
+            font-size: 2.5rem;
+            color: var(--primary-green);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-box p {
+            color: #555;
+            font-weight: 600;
+        }
+
+        .interactive-timeline {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow-main);
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .timeline-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .timeline-header h2 {
+            color: var(--dark-green);
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-family: Georgia, serif;
+        }
+
+        .timeline-line {
+            position: relative;
+            padding: 2rem 0;
+        }
+
+        .timeline-track {
+            position: relative;
+            height: 10px;
+            background: linear-gradient(90deg, var(--triassic-red) 0%, var(--triassic-red) 33%, var(--jurassic-gold) 33%, var(--jurassic-gold) 66%, var(--cretaceous-green) 66%, var(--cretaceous-green) 100%);
+            border-radius: 5px;
+            margin: 2rem 0 4rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .timeline-markers {
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            margin-top: -2.5rem;
+        }
+
+        .timeline-marker {
+            position: relative;
+            flex: 1;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-marker::before {
+            content: '';
+            position: absolute;
+            top: -1.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: white;
+            border: 5px solid;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .timeline-marker:hover::before {
+            transform: translateX(-50%) scale(1.3);
+        }
+
+        .timeline-marker.triassic::before {
+            border-color: var(--triassic-red);
+        }
+
+        .timeline-marker.jurassic::before {
+            border-color: var(--jurassic-gold);
+        }
+
+        .timeline-marker.cretaceous::before {
+            border-color: var(--cretaceous-green);
+        }
+
+        .marker-label {
+            margin-top: 1.5rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .marker-date {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 0.3rem;
+        }
+
+        .period-section {
+            background: rgba(255, 255, 255, 0.95);
+            margin-bottom: 3rem;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow-main);
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .period-header {
+            padding: 2.5rem;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .period-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0.1;
+            background-image: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="40" fill="white"/></svg>');
+        }
+
+        .triassic-header {
+            background: linear-gradient(135deg, #c94545, #a03636);
+        }
+
+        .jurassic-header {
+            background: linear-gradient(135deg, #d4a02d, #b38825);
+        }
+
+        .cretaceous-header {
+            background: linear-gradient(135deg, #5a9e5a, #3d5a3d);
+        }
+
+        .period-title {
+            font-size: 3rem;
+            font-family: Georgia, serif;
+            margin-bottom: 0.5rem;
+            position: relative;
+        }
+
+        .period-duration {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 1rem;
+        }
+
+        .period-tagline {
+            font-size: 1.1rem;
+            font-style: italic;
+            opacity: 0.85;
+        }
+
+        .period-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            padding: 3rem;
+        }
+
+        .period-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #f9fcf9, #f0f7f0);
+            padding: 2rem;
+            border-radius: 15px;
+            border-left: 5px solid;
+        }
+
+        .triassic-section .info-box {
+            border-left-color: var(--triassic-red);
+        }
+
+        .jurassic-section .info-box {
+            border-left-color: var(--jurassic-gold);
+        }
+
+        .cretaceous-section .info-box {
+            border-left-color: var(--cretaceous-green);
+        }
+
+        .info-box h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+        }
+
+        .triassic-section .info-box h3 {
+            color: var(--triassic-red);
+        }
+
+        .jurassic-section .info-box h3 {
+            color: var(--jurassic-gold);
+        }
+
+        .cretaceous-section .info-box h3 {
+            color: var(--cretaceous-green);
+        }
+
+        .info-box p, .info-box ul {
+            color: #555;
+            line-height: 1.8;
+        }
+
+        .info-box ul {
+            padding-left: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .info-box li {
+            margin-bottom: 0.5rem;
+        }
+
+        .period-features {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateX(10px);
+        }
+
+        .feature-card h4 {
+            font-size: 1.2rem;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .triassic-section .feature-card h4 {
+            color: var(--triassic-red);
+        }
+
+        .jurassic-section .feature-card h4 {
+            color: var(--jurassic-gold);
+        }
+
+        .cretaceous-section .feature-card h4 {
+            color: var(--cretaceous-green);
+        }
+
+        .dino-showcase {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .dino-mini-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .dino-mini-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .dino-mini-card img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+        }
+
+        .dino-mini-card .info {
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .dino-mini-card h5 {
+            color: var(--dark-green);
+            font-size: 1rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .dino-mini-card p {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+
+    </style>
+</head>
+<body>
+    <div class="banner">
+        <div class="banner-content">
+<div class="logo-container">
+    <a href="index.html" class="logo">
+        <img src="images/logofinal.png" alt="DinoWiki Logo">
+    </a>
+    <div>
+        <div class="site-title">DinoWiki</div>
+        <div class="site-subtitle">Tu Enciclopedia Digital de Dinosaurios</div>
+    </div>
+</div>
+            <button class="sound-toggle" id="soundToggle" onclick="toggleSound()">
+                <i class="fas fa-volume-up" id="soundIcon"></i>
+                <span id="soundText">Sonidos</span>
+            </button>
+            <div class="hamburger" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </div>
+
+<nav>
+    <div class="nav-container" id="navMenu">
+        <a href="index.html" class="active"><i class="fas fa-home"></i> Inicio</a>
+        <a href="galeria.html"><i class="fas fa-images"></i> Dinoinfo</a>
+        <a href="descubrimientos.html"><i class="fas fa-flask"></i> Descubrimientos</a>
+        <a href="periodos.html"><i class="fas fa-history"></i> Períodos</a>
+        <a href="quiz beta.html"><i class="fas fa-question-circle"></i> Quiz</a>
+        <a href="tienda.html"><i class="fas fa-store"></i> Tienda</a>
+    </div>
+</nav>
+
+
+    <div class="hero">
+        <h1>⏰ Períodos Geológicos del Mesozoico</h1>
+        <p>Viaja a través del tiempo y descubre los tres períodos que conformaron la Era Mesozoica, conocida como la "Era de los Dinosaurios": Triásico, Jurásico y Cretácico.</p>
+    </div>
+
+    <main>
+        <div class="timeline-overview">
+            <h2>La Era Mesozoica</h2>
+            <p style="max-width: 800px; margin: 0 auto; color: #555; font-size: 1.1rem; line-height: 1.8;">
+                El Mesozoico abarcó aproximadamente 186 millones de años, desde hace 252 hasta 66 millones de años. Durante este tiempo, los dinosaurios evolucionaron, dominaron y finalmente se extinguieron, dejando un legado fascinante en el registro fósil.
+            </p>
+            <div class="timeline-stats">
+                <div class="stat-box">
+                    <h3>186M</h3>
+                    <p>Años de Duración</p>
+                </div>
+                <div class="stat-box">
+                    <h3>3</h3>
+                    <p>Períodos Principales</p>
+                </div>
+                <div class="stat-box">
+                    <h3>700+</h3>
+                    <p>Especies Conocidas</p>
+                </div>
+                <div class="stat-box">
+                    <h3>100%</h3>
+                    <p>Dominio Terrestre</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="interactive-timeline">
+            <div class="timeline-header">
+                <h2>Línea de Tiempo Interactiva</h2>
+                <p style="color: #666; font-size: 1.1rem;">Explora la evolución cronológica del Mesozoico</p>
+            </div>
+            <div class="timeline-line">
+                <div class="timeline-track"></div>
+                <div class="timeline-markers">
+                    <div class="timeline-marker triassic" onclick="scrollToPeriod('triassic')">
+                        <div class="marker-label" style="color: #c94545;">Triásico</div>
+                        <div class="marker-date">252 - 201 M.a.</div>
+                    </div>
+                    <div class="timeline-marker jurassic" onclick="scrollToPeriod('jurassic')">
+                        <div class="marker-label" style="color: #d4a02d;">Jurásico</div>
+                        <div class="marker-date">201 - 145 M.a.</div>
+                    </div>
+                    <div class="timeline-marker cretaceous" onclick="scrollToPeriod('cretaceous')">
+                        <div class="marker-label" style="color: #5a9e5a;">Cretácico</div>
+                        <div class="marker-date">145 - 66 M.a.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section class="period-section triassic-section" id="triassic">
+            <div class="period-header triassic-header">
+                <h2 class="period-title">🔴 Período Triásico</h2>
+                <p class="period-duration">252 - 201 millones de años atrás | Duración: 51 millones de años</p>
+                <p class="period-tagline">"El Nacimiento de los Dinosaurios"</p>
+            </div>
+            <div class="period-content">
+                <div class="period-info">
+                    <div class="info-box">
+                        <h3><i class="fas fa-globe"></i> Geografía y Clima</h3>
+                        <p>Durante el Triásico, todos los continentes estaban unidos formando el supercontinente Pangea, rodeado por un único océano global llamado Panthalassa. El clima era generalmente cálido y árido, con vastas áreas desérticas en el interior del continente.</p>
+                        <ul>
+                            <li>Temperatura global: 17-30°C promedio</li>
+                            <li>Sin casquetes polares de hielo</li>
+                            <li>Estaciones marcadas pero cálidas</li>
+                            <li>Grandes desiertos interiores</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-box">
+                        <h3><i class="fas fa-leaf"></i> Flora y Vegetación</h3>
+                        <p>La vegetación del Triásico estaba dominada por plantas primitivas adaptadas al clima seco. Las coníferas y helechos eran abundantes, pero aún no existían las plantas con flores.</p>
+                        <ul>
+                            <li>Coníferas y cicadáceas dominantes</li>
+                            <li>Helechos arborescentes</li>
+                            <li>Ginkgos primitivos</li>
+                            <li>Sin plantas con flores (angiospermas)</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-box">
+                        <h3><i class="fas fa-dna"></i> Evolución y Vida</h3>
+                        <p>El Triásico marcó un nuevo comienzo tras la extinción masiva del Pérmico. Los primeros dinosaurios aparecieron en este período, pequeños y bípedos, compitiendo con otros reptiles por el dominio terrestre.</p>
+                        <ul>
+                            <li>Aparición de los primeros dinosaurios (230 M.a.)</li>
+                            <li>Dominio inicial de los arcosaurios</li>
+                            <li>Primeros mamíferos primitivos</li>
+                            <li>Reptiles marinos como ictiosaurios</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="period-features">
+                    <div class="feature-card">
+                        <h4><i class="fas fa-star"></i> Eventos Importantes</h4>
+                        <p>• Recuperación de la extinción Pérmica (la más grande de la historia)<br>
+                        • Fragmentación inicial de Pangea<br>
+                        • Extinción masiva del Triásico-Jurásico (201 M.a.)<br>
+                        • Surgimiento de los dinosaurios como grupo dominante</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4><i class="fas fa-dragon"></i> Dinosaurios Representativos</h4>
+                        <div class="dino-showcase">
+                            <div class="dino-mini-card">
+                                <img src="https://images.unsplash.com/photo-1580974852861-c381510bc98a?w=300" alt="Coelophysis">
+                                <div class="info">
+                                    <h5>Coelophysis</h5>
+                                    <p>Carnívoro ágil y pequeño</p>
+                                </div>
+                            </div>
+                            <div class="dino-mini-card">
+                                <img src="https://images.unsplash.com/photo-1519452635265-7b1fbfd1e4e0?w=300" alt="Plateosaurus">
+                                <div class="info">
+                                    <h5>Plateosaurus</h5>
+                                    <p>Herbívoro temprano</p>
+                                </div>
+                            </div>
+                            <div class="dino-mini-card">
+                                <img src="https://images.unsplash.com/photo-1615648535358-9e3f5c0f7a2e?w=300" alt="Herrerasaurus">
+                                <div class="info">
+                                    <h5>Herrerasaurus</h5>
+                                    <p>Depredador primitivo</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4><i class="fas fa-exclamation-triangle"></i> Extinción Final</h4>
+                        <p>El Triásico terminó con una extinción masiva que eliminó aproximadamente el 76% de todas las especies. Erupciones volcánicas masivas y cambios climáticos abruptos fueron las causas principales, permitiendo que los dinosaurios prosperaran en el Jurásico.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="period-section jurassic-section" id="jurassic">
+            <div class="period-header jurassic-header">
+                <h2 class="period-title">🟡 Período Jurásico</h2>
+                <p class="period-duration">201 - 145 millones de años atrás | Duración: 56 millones de años</p>
+                <p class="period-tagline">"La Edad de Oro de los Gigantes"</p>
+            </div>
+            <div class="period-content">
+                <div class="period-info">
+                    <div class="info-box">
+                        <h3><i class="fas fa-globe"></i> Geografía y Clima</h3>
+                        <p>Pangea continuó fragmentándose, formando dos grandes masas: Laurasia al norte y Gondwana al sur. El clima se volvió más húmedo y templado, favoreciendo una explosión de vida vegetal y animal.</p>
+                        <ul>
+                            <li>Fragmentación activa de Pangea</li>
+                            <li>Formación del Océano Atlántico inicial</li>
+                            <li>Clima cálido y húmedo global</li>
+                            <li>Nivel del mar elevado</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-box">
+                        <h3><i class="fas fa-leaf"></i> Flora y Vegetación</h3>
+                        <p>La vegetación jurásica era exuberante y diversa. Bosques densos de coníferas, helechos gigantes y cicadáceas cubrían vastas áreas, proporcionando alimento abundante para los herbívoros.</p>
+                        <ul>
+                            <li>Bosques de coníferas extensos</li>
+                            <li>Helechos y cycas abundantes</li>
+                            <li>Ginkgos prosperando</li>
+                            <li>Primeras plantas con flores primitivas</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-box">
+                        <h3><i class="fas fa-dna"></i> Evolución y Vida</h3>
+                        <p>El Jurásico vio el surgimiento de los dinosaurios más grandes que jamás caminaron sobre la Tierra. Los saurópodos gigantes y grandes terópodos dominaron los ecosistemas terrestres.</p>
+                        <ul>
+                            <li>Aparición de los dinosaurios más grandes</li>
+                            <li>Diversificación de los saurópodos</li>
+                            <li>Primeras aves (Archaeopteryx)</li>
+                            <li>Proliferación de reptiles marinos</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="period-features">
+                    <div class="feature-card">
+                        <h4><i class="fas fa-star"></i> Eventos Importantes</h4>
+                        <p>• Diversificación explosiva de dinosaurios<br>
+                        • Aparición de Archaeopteryx (primera ave conocida)<br>
+                        • Dominio de los saurópodos gigantes<br>
+                        • Mares poco profundos cubriendo continentes<br>
+                        • Evolución de los primeros mamíferos verdaderos</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4><i class="fas fa-dragon"></i> Dinosaurios Representativos</h4>
+                        <div class="dino-showcase">
+                            <div class="dino-mini-card">
+                                <img src="https://images.unsplash.com/photo-1519452635265-7b1fbfd1e4e0?w=300" alt="Brachiosaurus">
+                                <div class="info">
+                                    <h5>Brachiosaurus</h5>
+                                    <p>Gigante de cuello largo</p>
+                                </div>
+                            </div>
+                            <div class="dino-mini-card">
+                                <img src="https://images.unsplash.com/photo-1519452635265-7b1fbfd1e4e0?w=300" alt="Stegosaurus">
+                                <div class="info">
+                                    <h5>Stegosaurus</h5>
+                                    <p>Con placas dorsales</p>
+                                </div>
+                            </div>
+                            <div class="dino-mini-card">
+                                <img src="https://images.unsplash.com/photo-1580974852861-c381510bc98a?w=300" alt="Allosaurus">
+                                <div class="info">
+                                    <h5>Allosaurus</h5>
+                                    <p>Superdepredador</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4><i class="fas fa-feather"></i> Origen de las Aves</h4>
+                        <p>El descubrimiento de Archaeopteryx en sedimentos jurásicos proporcionó evidencia crucial del vínculo evolutivo entre dinosaurios y aves. Este "eslabón perdido" poseía tanto características reptilianas como aviares.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="period-section cretaceous-section" id="cretaceous">
+            <div class="period-header cretaceous-header">
+                <h2 class="period-title">🟢 Período Cretácico</h2>
+                <p class="period-duration">145 - 66 millones de años atrás | Duración: 79 millones de años</p>
+                <p class="period-tagline">"El Apogeo y Final de los Dinosaurios"</p>
+            </div>
+            <div class="period-content">
+                <div class="period-info">
+                    <div class="info-box">
+                        <h3><i class="fas fa-globe"></i> Geografía y Clima</h3>
+                        <p>Los continentes continuaron separándose, acercándose a sus posiciones actuales. El clima era cálido con fluctuaciones significativas. Los niveles del mar alcanzaron su punto más alto en la historia de la Tierra.</p>
+                        <ul>
+                            <li>Continentes separándose activamente</li>
+                            <li>Nivel del mar más alto de la historia</li>
+                            <li>Clima variado: cálido a templado</li>
+                            <li>Formación del Océano Atlántico Sur</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-box">
+                        <h3><i class="fas fa-leaf"></i> Flora y Vegetación</h3>
+                        <p>El Cretácico presenció la "revolución de las angiospermas". Las plantas con flores aparecieron y se diversificaron rápidamente, transformando los ecosistemas terrestres para siempre.</p>
+                        <ul>
+                            <li>Explosión de plantas con flores (angiospermas)</li>
+                            <li>Aparición de árboles modernos</li>
+                            <li>Primeros pastos hacia el final</li>
+                            <li>Coevolución con insectos polinizadores</li>
+                        </ul>
+                    </div>
+
+                    <div class="info-box">
+                        <h3><i class="fas fa-dna"></i> Evolución y Vida</h3>
+                        <p>El Cretácico vio la máxima diversidad de dinosaurios. Aparecieron los icónicos T-Rex y Triceratops. Los dinosaurios alcanzaron su pico evolutivo justo antes de la extinción masiva.</p>
+                        <ul>
+                            <li>Máxima diversidad de dinosaurios</li>
+                            <li>Aparición de tiranosáuridos y ceratópsidos</li>
+                            <li>Diversificación de aves modernas</li>
+                            <li>Mamíferos pequeños pero diversos</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="period-features">
+                    <div class="feature-card">
+                        <h4><i class="fas fa-star"></i> Eventos Importantes</h4>
+                        <p>• Revolución de las plantas con flores<br>
+                        • Diversificación máxima de dinosaurios<br>
+                        • Separación completa de continentes<br>
+                        • Aparición de los dinosaurios más famosos<br>
+                        • Extinción masiva K-Pg (66 M.a.)</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4><i class="fas fa-dragon"></i> Dinosaurios Representativos</h4>
+                        <div class="dino-showcase">
+                            <div class="dino-mini-card">
+                                <img src="https://images.unsplash.com/photo-1580974852861-c381510bc98a?w=300" alt="T-Rex">
+                                <div class="info">
+                                    <h5>T-Rex</h5>
+                                    <p>Rey tirano supremo</p>
+                                </div>
+                            </div>
+                            <div class="dino-mini-card">
+                                <img src="https://images.unsplash.com/photo-1519452635265-7b1fbfd1e4e0?w=300" alt="Triceratops">
+                                <div class="info">
+                                    <h5>Triceratops</h5>
+                                    <p>Tres cuernos icónico</p>
+                                </div>
+                            </div>
+                            <div class="dino-mini-card">
+                                <img src="https://images.unsplash.com/photo-1580974852861-c381510bc98a?w=300" alt="Velociraptor">
+                                <div class="info">
+                                    <h5>Velociraptor</h5>
+                                    <p>Cazador inteligente</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <h4><i class="fas fa-meteor"></i> La Gran Extinción</h4>
+                        <p>Hace 66 millones de años, un asteroide de 10 km de diámetro impactó en Chicxulub, México. El impacto generó tsunamis masivos, incendios globales y un invierno nuclear que duró años. El 75% de todas las especies, incluyendo todos los dinosaurios no aviares, se extinguieron.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="timeline-overview" style="margin-top: 4rem;">
+            <h2>El Legado del Mesozoico</h2>
+            <p style="max-width: 900px; margin: 0 auto 2rem; color: #555; font-size: 1.1rem; line-height: 1.8;">
+                Aunque los dinosaurios no aviares se extinguieron hace 66 millones de años, su legado perdura. Las aves modernas son sus descendientes directos, y el estudio de los dinosaurios nos ayuda a comprender la evolución, la extinción y la resiliencia de la vida en la Tierra.
+            </p>
+            <div class="info-box" style="max-width: 800px; margin: 2rem auto; text-align: left;">
+                <h3><i class="fas fa-lightbulb"></i> ¿Sabías que...?</h3>
+                <ul>
+                    <li>Los dinosaurios dominaron la Tierra durante 165 millones de años (los humanos modernos llevamos solo 300,000 años)</li>
+                    <li>Las aves son técnicamente dinosaurios - son los únicos dinosaurios que sobrevivieron la extinción K-Pg</li>
+                    <li>Durante el Mesozoico, los mamíferos existían pero eran pequeños, nocturnos y vivían a la sombra de los dinosaurios</li>
+                    <li>El clima del Mesozoico era generalmente más cálido que el actual, sin casquetes polares permanentes</li>
+                    <li>Fósiles de dinosaurios se han encontrado en todos los continentes, incluyendo la Antártida</li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <!-- Sección: Sobre DinoWiki -->
+            <div class="footer-section">
+                <h3><i class="fas fa-book-open"></i> Sobre DinoWiki</h3>
+                <p>DinoWiki es tu enciclopedia digital dedicada al fascinante mundo de los dinosaurios. Nuestra misión es hacer accesible el conocimiento paleontológico de manera educativa, precisa y entretenida para todas las edades.</p>
+                <p style="margin-top: 1rem;"><strong>Fundada en 2025</strong></p>
+            </div>
+
+            <!-- Sección: Enlaces Rápidos - ACTUALIZADA con todas las páginas -->
+            <div class="footer-section">
+                <h3><i class="fas fa-link"></i> Enlaces Rápidos</h3>
+                <!-- Para modificar estos enlaces, simplemente cambia el href y el texto -->
+                <a href="index.html"><i class="fas fa-chevron-right"></i> Inicio</a>
+                <a href="descubrimientos.html"><i class="fas fa-chevron-right"></i> Descubrimientos</a>
+                <a href="periodos.html"><i class="fas fa-chevron-right"></i> Períodos Geológicos</a>
+                <a href="galeria.html"><i class="fas fa-chevron-right"></i> Galería</a>
+                <a href="quiz beta.html"><i class="fas fa-chevron-right"></i> Quiz</a>
+                <a href="tienda.html"><i class="fas fa-chevron-right"></i> Tienda</a>
+            </div>
+
+            <!-- Sección: Redes Sociales con efectos mejorados -->
+            <div class="footer-section">
+                <h3><i class="fas fa-share-alt"></i> Síguenos</h3>
+                <p>Únete a nuestra comunidad de entusiastas de la paleontología y mantente actualizado con los últimos descubrimientos.</p>
+                <!-- Para modificar las redes sociales, cambia el href y el aria-label -->
+                <div class="social-links">
+                    <a href="#" aria-label="Facebook" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" aria-label="Twitter" title="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href=" https://www.instagram.com/dinowikiofficial?igsh=MWtqaHNpam10MTE0bw==" aria-label="Instagram" title="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="YouTube" title="YouTube"><i class="fab fa-youtube"></i></a>
+                    <a href="#" aria-label="TikTok" title="TikTok"><i class="fab fa-tiktok"></i></a>
+                    <a href=" https://discord.gg/8fpr25htVb" aria-label="Discord" title="Discord"><i class="fab fa-discord"></i></a>
+                </div>
+            </div>
+
+            <!-- Sección: Información de Contacto -->
+            <div class="footer-section">
+                <h3><i class="fas fa-envelope"></i> Contacto</h3>
+                <!-- Para modificar los datos de contacto, cambia el texto dentro de las etiquetas <p> -->
+                <h3><i class="fas fa-envelope"></i> Contacto</h3>
+                <p><i class="fas fa-map-marker-alt"></i> Mendoza, Argentina</p>
+                <p><i class="fas fa-envelope"></i> Dinowikioficial@gmail.com</p>
+                <p><i class="fas fa-phone"></i> +54 9 2613 468800</p>
+                <p style="margin-top: 1rem;"><i class="fas fa-clock"></i> Lun - Vie: 9:00 - 18:00</p>
+            </div>
+        </div>
+
+        <!-- Sección inferior del footer con enlaces legales y copyright -->
+        <div class="footer-bottom">
+            <!-- Enlaces legales - Para modificar, cambia el href y el texto -->
+            <div class="footer-links">
+                <a href="#">Política de Privacidad</a>
+                <a href="#">Términos de Uso</a>
+                <a href="#">Política de Cookies</a>
+                <a href="#">Aviso Legal</a>
+                <a href="#">Accesibilidad</a>
+                <a href="#">Mapa del Sitio</a>
+            </div>
+            <!-- Información de copyright - Para modificar el año, cambia el número -->
+            <p style="margin-top: 1.5rem;">&copy; 2025 DinoWiki. Todos los derechos reservados.</p>
+            <p>Contenido educativo y científico | Diseñado con 🦕 pasión por la paleontología</p>
+        </div>
+    </footer>
+
+    <button class="scroll-top" id="scrollTop" onclick="scrollToTop()">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <audio id="ambientSound" loop>
+        <source src="https://assets.mixkit.co/active_storage/sfx/2462/2462-preview.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        let isPlaying = false;
+        const audio = document.getElementById('ambientSound');
+        audio.volume = 0.3;
+
+        function toggleSound() {
+            const soundToggle = document.getElementById('soundToggle');
+            const soundIcon = document.getElementById('soundIcon');
+            const soundText = document.getElementById('soundText');
+            
+            if (!isPlaying) {
+                audio.play();
+                isPlaying = true;
+                soundIcon.className = 'fas fa-volume-up';
+                soundText.textContent = 'Sonando';
+            } else {
+                audio.pause();
+                isPlaying = false;
+                soundIcon.className = 'fas fa-volume-mute';
+                soundText.textContent = 'Silencio';
+            }
+        }
+
+        function toggleMenu() {
+            const navMenu = document.getElementById('navMenu');
+            const hamburger = document.querySelector('.hamburger');
+            navMenu.classList.toggle('active');
+            hamburger.classList.toggle('active');
+        }
+
+        document.querySelectorAll('.nav-container a').forEach(link => {
+            link.addEventListener('click', () => {
+                const navMenu = document.getElementById('navMenu');
+                const hamburger = document.querySelector('.hamburger');
+                if (window.innerWidth <= 768) {
+                    navMenu.classList.remove('active');
+                    hamburger.classList.remove('active');
+                }
+            });
+        });
+
+        function scrollToPeriod(periodId) {
+            const element = document.getElementById(periodId);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        window.addEventListener('scroll', function() {
+            const scrollTop = document.getElementById('scrollTop');
+            if (window.pageYOffset > 300) {
+                scrollTop.classList.add('visible');
+            } else {
+                scrollTop.classList.remove('visible');
+            }
+        });
+
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '0';
+                    entry.target.style.transform = 'translateY(20px)';
+                    setTimeout(() => {
+                        entry.target.style.transition = 'all 0.6s ease';
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }, 100);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.period-section').forEach(section => {
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>

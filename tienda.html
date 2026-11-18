@@ -1,0 +1,1206 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Tienda oficial de DinoWiki: peluches, libros, juguetes y merchandising de dinosaurios.">
+    <meta name="keywords" content="dinosaurios, paleontología, T-Rex, Triceratops, Velociraptor, Mesozoico">
+    <meta name="author" content="DinoWiki">
+    <link rel="icon" type="image/png" href="images/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="images/favicon.svg" />
+    <link rel="shortcut icon" href="images/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png" />
+    <link rel="manifest" href="images/site.webmanifest" />
+    <title>DinoWiki - Tienda de Merchandising</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-green: #5a9e5a;
+            --dark-green: #3d5a3d;
+            --light-green: #7fb77f;
+            --bg-green: #e8f5e8;
+            --carnivore-red: #c94545;
+            --omnivore-gold: #d4a02d;
+            --shadow-main: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2c5f2d 0%, #1a3a1b 100%);
+            background-attachment: fixed;
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(127, 183, 127, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(127, 183, 127, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .banner {
+            background: linear-gradient(135deg, rgba(61, 90, 61, 0.98) 0%, rgba(90, 124, 90, 0.98) 100%);
+            backdrop-filter: blur(15px);
+            padding: 1rem 0;
+            box-shadow: var(--shadow-main);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 3px solid var(--light-green);
+        }
+
+        .banner-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 1rem;
+            gap: 1rem;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            animation: slideInLeft 0.8s ease-out;
+            flex-shrink: 0;
+        }
+
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .logo {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
+        }
+
+        .logo:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .site-title {
+            color: #fff;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            letter-spacing: 1px;
+        }
+
+        .site-subtitle {
+            color: #d4e8d4;
+            font-size: 0.75rem;
+            font-weight: 300;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .sound-toggle {
+            background: rgba(127, 183, 127, 0.2);
+            border: 2px solid var(--light-green);
+            color: #fff;
+            padding: 0.5rem 0.8rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            white-space: nowrap;
+        }
+
+        .sound-toggle:hover {
+            background: var(--light-green);
+            transform: scale(1.05);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 4px;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+        }
+
+        .hamburger span {
+            width: 22px;
+            height: 3px;
+            background: #fff;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(6px, -6px);
+        }
+
+        nav {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            padding: 1rem 0;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            padding: 0 1rem;
+        }
+
+        nav a {
+            color: var(--dark-green);
+            text-decoration: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #f0f7f0, #e8f5e8);
+            position: relative;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        nav a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+            transition: left 0.5s ease;
+        }
+
+        nav a:hover::before {
+            left: 100%;
+        }
+
+        nav a:hover {
+            background: linear-gradient(135deg, var(--light-green), var(--primary-green));
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(127, 183, 127, 0.4);
+        }
+
+        .hero {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem 1rem;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: clamp(1.8rem, 5vw, 3rem);
+            color: #fff;
+            text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.7);
+            margin-bottom: 1rem;
+            font-family: Georgia, serif;
+        }
+
+        .hero p {
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
+            color: rgba(255, 255, 255, 0.9);
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.8;
+            padding: 0 1rem;
+        }
+
+        .quick-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1.5rem 1rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-card i {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            margin-bottom: 0.8rem;
+            color: var(--primary-green);
+        }
+
+        .stat-card h3 {
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            color: var(--dark-green);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card p {
+            color: #666;
+            font-size: clamp(0.85rem, 2vw, 0.95rem);
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.95);
+            margin-bottom: 2rem;
+            padding: 2rem 1.5rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow-main);
+        }
+
+        .section h2 {
+            text-align: center;
+            color: var(--dark-green);
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            margin-bottom: 2rem;
+            font-family: Georgia, serif;
+            border-bottom: 4px solid var(--light-green);
+            padding-bottom: 1rem;
+        }
+
+        .dino-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .dino-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .dino-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .dino-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .dino-card-content {
+            padding: 1.5rem;
+        }
+
+        .dino-card h3 {
+            color: var(--dark-green);
+            font-size: clamp(1.2rem, 3vw, 1.5rem);
+            margin-bottom: 0.5rem;
+        }
+
+        .dino-badge {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .carnivoro {
+            background: #ffe6e6;
+            color: var(--carnivore-red);
+        }
+
+        .herbivoro {
+            background: var(--bg-green);
+            color: var(--primary-green);
+        }
+
+        .omnivoro {
+            background: #fff9e6;
+            color: var(--omnivore-gold);
+        }
+
+        footer {
+            background: linear-gradient(135deg, #1a2a1a 0%, #0f1f0f 100%);
+            color: #d4e8d4;
+            padding: 3rem 1rem 1.5rem;
+            margin-top: 3rem;
+            border-top: 4px solid #7fb77f;
+            box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><path d="M0 0 L50 50 L100 0" stroke="rgba(127,183,127,0.05)" fill="none"/></svg>');
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-section h3 {
+            color: #7fb77f;
+            font-size: clamp(1.2rem, 3vw, 1.5rem);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            font-family: Georgia, serif;
+            position: relative;
+            padding-bottom: 0.8rem;
+        }
+
+        .footer-section h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(90deg, #7fb77f, transparent);
+        }
+
+        .footer-section p {
+            color: #d4e8d4;
+            line-height: 1.9;
+            font-size: clamp(0.9rem, 2vw, 1rem);
+            margin-bottom: 1rem;
+        }
+
+        .footer-section a {
+            color: #a8d5a8;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: block;
+            margin-bottom: 0.7rem;
+            padding-left: 0;
+            font-size: clamp(0.9rem, 2vw, 1rem);
+        }
+
+        .footer-section a:hover {
+            color: #7fb77f;
+            padding-left: 10px;
+            text-shadow: 0 0 10px rgba(127, 183, 127, 0.5);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .social-links a {
+            width: 45px;
+            height: 45px;
+            background: rgba(127, 183, 127, 0.15);
+            border: 2px solid #7fb77f;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-size: 1.2rem;
+            margin: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .social-links a::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: #7fb77f;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.4s ease, height 0.4s ease;
+            z-index: -1;
+        }
+
+        .social-links a:hover::before {
+            width: 100%;
+            height: 100%;
+        }
+
+        .social-links a:hover {
+            color: #1a2a1a;
+            transform: translateY(-5px) scale(1.15);
+            box-shadow: 0 8px 20px rgba(127, 183, 127, 0.5);
+            border-color: #5a9e5a;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(127, 183, 127, 0.3);
+            padding-top: 2rem;
+            margin-top: 2rem;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-bottom p {
+            color: #a8d5a8;
+            font-size: clamp(0.85rem, 2vw, 0.95rem);
+            margin: 0.7rem 0;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: #a8d5a8;
+            text-decoration: none;
+            font-size: clamp(0.85rem, 2vw, 0.95rem);
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+        }
+
+        .footer-links a:hover {
+            color: #7fb77f;
+            background: rgba(127, 183, 127, 0.1);
+            text-decoration: none;
+        }
+
+        .scroll-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--light-green), var(--primary-green));
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 1.3rem;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            z-index: 999;
+        }
+
+        .scroll-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scroll-top:hover {
+            transform: translateY(-5px) scale(1.1);
+        }
+
+        /* MEDIA QUERIES PARA RESPONSIVE */
+
+        /* Tablets grandes y pantallas medianas */
+        @media (max-width: 1024px) {
+            .banner-content {
+                padding: 0 1.5rem;
+            }
+
+            .dino-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+
+            .quick-stats {
+                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            }
+        }
+
+        /* Tablets */
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+
+            .nav-container {
+                flex-direction: column;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease;
+                padding: 0 1rem;
+            }
+
+            .nav-container.active {
+                max-height: 500px;
+                padding: 1rem;
+            }
+
+            nav a {
+                width: 100%;
+                text-align: center;
+                justify-content: center;
+            }
+
+            .logo {
+                width: 50px;
+                height: 50px;
+            }
+
+            .logo-container {
+                gap: 0.8rem;
+            }
+
+            .site-title {
+                font-size: 1.3rem;
+            }
+
+            .site-subtitle {
+                font-size: 0.7rem;
+            }
+
+            .sound-toggle {
+                padding: 0.5rem;
+                font-size: 0.8rem;
+            }
+
+            .sound-toggle span {
+                display: none;
+            }
+
+            .hero {
+                margin: 1.5rem auto;
+                padding: 1.5rem 1rem;
+            }
+
+            .section {
+                padding: 1.5rem 1rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .dino-grid {
+                grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+                gap: 1.2rem;
+            }
+
+            .quick-stats {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+
+            .stat-card {
+                padding: 1.2rem 0.8rem;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .footer-links {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+
+            .social-links {
+                justify-content: center;
+            }
+        }
+
+        /* Móviles */
+        @media (max-width: 480px) {
+            .banner {
+                padding: 0.8rem 0;
+            }
+
+            .banner-content {
+                padding: 0 0.8rem;
+                gap: 0.5rem;
+            }
+
+            .logo {
+                width: 40px;
+                height: 40px;
+            }
+
+            .logo-container {
+                gap: 0.5rem;
+            }
+
+            .site-title {
+                font-size: 1.1rem;
+            }
+
+            .site-subtitle {
+                font-size: 0.65rem;
+            }
+
+            .sound-toggle {
+                padding: 0.4rem;
+                border-radius: 20px;
+            }
+
+            .hamburger {
+                padding: 6px;
+            }
+
+            .hamburger span {
+                width: 20px;
+            }
+
+            nav {
+                padding: 0.8rem 0;
+            }
+
+            nav a {
+                padding: 0.6rem 1rem;
+                font-size: 0.95rem;
+            }
+
+            .hero {
+                margin: 1rem auto;
+                padding: 1rem 0.8rem;
+            }
+
+            main {
+                padding: 0 0.8rem;
+            }
+
+            .section {
+                padding: 1.2rem 0.8rem;
+                border-radius: 15px;
+            }
+
+            .dino-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .dino-card img {
+                height: 180px;
+            }
+
+            .dino-card-content {
+                padding: 1.2rem;
+            }
+
+            .quick-stats {
+                grid-template-columns: 1fr;
+                gap: 0.8rem;
+            }
+
+            .stat-card {
+                padding: 1rem 0.8rem;
+            }
+
+            footer {
+                padding: 2rem 0.8rem 1rem;
+            }
+
+            .social-links a {
+                width: 40px;
+                height: 40px;
+                font-size: 1.1rem;
+            }
+
+            .scroll-top {
+                width: 45px;
+                height: 45px;
+                bottom: 15px;
+                right: 15px;
+                font-size: 1.2rem;
+            }
+        }
+
+        /* Móviles muy pequeños */
+        @media (max-width: 360px) {
+            .site-title {
+                font-size: 1rem;
+            }
+
+            .site-subtitle {
+                display: none;
+            }
+
+            .quick-stats {
+                padding: 0 0.5rem;
+            }
+
+            .footer-links a {
+                padding: 0.4rem 0.8rem;
+            }
+        }
+
+        /* Landscape móvil */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .hero {
+                margin: 1rem auto;
+                padding: 1rem;
+            }
+
+            .hero h1 {
+                font-size: 1.8rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .section {
+                padding: 1.5rem 1rem;
+            }
+        }
+
+        /* ===== TIENDA ===== */
+        .cart-btn{position:relative;background:rgba(127,183,127,.2);border:2px solid var(--light-green);color:#fff;padding:.5rem .8rem;border-radius:25px;cursor:pointer;font-size:.85rem;transition:all .3s ease;display:flex;align-items:center;gap:.5rem;white-space:nowrap}
+        .cart-btn:hover{background:var(--light-green);transform:scale(1.05)}
+        .cart-count{background:var(--carnivore-red);color:#fff;border-radius:50%;min-width:20px;height:20px;font-size:.72rem;font-weight:700;display:flex;align-items:center;justify-content:center;padding:0 4px}
+        .perks{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;max-width:1200px;margin:0 auto 2rem;padding:0 1rem;position:relative;z-index:1}
+        .perks .stat-card h3{font-size:1.1rem}
+        .shop-tools{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;justify-content:center;margin-bottom:1.5rem}
+        .filter-btn{background:linear-gradient(135deg,#f0f7f0,#e8f5e8);border:2px solid var(--light-green);color:var(--dark-green);padding:.5rem 1.1rem;border-radius:25px;font-weight:600;cursor:pointer;font-size:.95rem;transition:all .3s ease}
+        .filter-btn:hover,.filter-btn.active{background:linear-gradient(135deg,var(--light-green),var(--primary-green));color:#fff;transform:translateY(-2px);box-shadow:0 4px 15px rgba(127,183,127,.4)}
+        .sort-select{padding:.5rem 1rem;border-radius:25px;border:2px solid var(--light-green);background:#fff;color:var(--dark-green);font-weight:600;font-size:.95rem;cursor:pointer}
+        .shop-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1.5rem}
+        .product-card{background:#fff;border-radius:15px;overflow:hidden;box-shadow:0 5px 20px rgba(0,0,0,.1);transition:all .3s ease;display:flex;flex-direction:column;position:relative}
+        .product-card:hover{transform:translateY(-10px);box-shadow:0 10px 30px rgba(0,0,0,.2)}
+        .product-card img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}
+        .product-badge{position:absolute;top:10px;left:10px;background:var(--carnivore-red);color:#fff;font-size:.78rem;font-weight:700;padding:.25rem .7rem;border-radius:15px;box-shadow:0 2px 8px rgba(0,0,0,.25)}
+        .product-badge.new{background:var(--primary-green)}
+        .product-body{padding:1.2rem 1.3rem 1.3rem;display:flex;flex-direction:column;flex:1}
+        .product-body h3{color:var(--dark-green);font-size:1.2rem;margin:.3rem 0 .4rem}
+        .product-body p{color:#555;font-size:.92rem;flex:1}
+        .product-stars{color:var(--omnivore-gold);font-size:.85rem;margin-top:.5rem}
+        .product-stars span{color:#888;margin-left:.3rem}
+        .product-footer{display:flex;align-items:center;justify-content:space-between;gap:.5rem;margin-top:1rem}
+        .price{font-size:1.3rem;font-weight:700;color:var(--dark-green)}
+        .price small{display:block;font-size:.78rem;font-weight:400;color:#999;text-decoration:line-through}
+        .add-btn{background:linear-gradient(135deg,var(--light-green),var(--primary-green));color:#fff;border:none;padding:.6rem 1rem;border-radius:25px;font-weight:600;cursor:pointer;transition:all .3s ease;font-size:.9rem;white-space:nowrap}
+        .add-btn:hover{transform:scale(1.07);box-shadow:0 4px 15px rgba(127,183,127,.5)}
+        .cart-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);opacity:0;visibility:hidden;transition:.3s;z-index:1900}
+        .cart-overlay.open{opacity:1;visibility:visible}
+        .cart-drawer{position:fixed;top:0;right:0;height:100%;width:min(400px,100vw);background:#fff;z-index:2000;transform:translateX(100%);transition:transform .35s ease;display:flex;flex-direction:column;box-shadow:-10px 0 40px rgba(0,0,0,.35)}
+        .cart-drawer.open{transform:translateX(0)}
+        .cart-head{background:linear-gradient(135deg,var(--dark-green),#5a7c5a);color:#fff;padding:1.2rem;display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid var(--light-green);font-family:Georgia,serif;font-size:1.3rem}
+        .cart-head button{background:none;border:none;color:#fff;font-size:1.4rem;cursor:pointer}
+        .cart-items{flex:1;overflow-y:auto;padding:1rem}
+        .cart-empty{text-align:center;color:#777;padding:3rem 1rem}
+        .cart-empty i{font-size:3rem;color:var(--light-green);margin-bottom:1rem;display:block}
+        .cart-item{display:flex;gap:.8rem;align-items:center;padding:.8rem 0;border-bottom:1px solid #e8f5e8}
+        .cart-item img{width:70px;height:52px;object-fit:cover;border-radius:8px}
+        .cart-item-info{flex:1;font-size:.9rem;color:var(--dark-green)}
+        .cart-item-info b{display:block}
+        .qty{display:flex;align-items:center;gap:.4rem;margin-top:.3rem}
+        .qty button{width:24px;height:24px;border-radius:50%;border:1px solid var(--light-green);background:var(--bg-green);cursor:pointer;color:var(--dark-green);font-weight:700}
+        .cart-remove{background:none;border:none;color:var(--carnivore-red);cursor:pointer;font-size:1rem}
+        .cart-foot{padding:1.2rem;border-top:2px solid var(--bg-green);background:#f7fbf7}
+        .cart-total{display:flex;justify-content:space-between;font-size:1.2rem;font-weight:700;color:var(--dark-green);margin-bottom:1rem}
+        .checkout-btn{width:100%;background:linear-gradient(135deg,#3fa65a,#2e7d46);color:#fff;border:none;padding:.9rem;border-radius:25px;font-size:1rem;font-weight:700;cursor:pointer;transition:.3s}
+        .checkout-btn:hover{transform:translateY(-2px);box-shadow:0 4px 15px rgba(46,125,70,.5)}
+        .checkout-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
+        .toast{position:fixed;bottom:25px;left:50%;transform:translate(-50%,120px);background:var(--dark-green);color:#fff;padding:.8rem 1.5rem;border-radius:25px;box-shadow:var(--shadow-main);z-index:2100;transition:transform .35s ease;border:2px solid var(--light-green)}
+        .toast.show{transform:translate(-50%,0)}
+        .shop-note{text-align:center;color:#666;font-size:.85rem;margin-top:1.5rem}
+        @media (max-width:768px){.cart-btn span.lbl{display:none}.shop-grid{grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}}
+        @media (max-width:480px){.shop-grid{grid-template-columns:1fr}.perks{grid-template-columns:1fr 1fr}}
+    </style>
+</head>
+<body>
+    <div class="banner">
+        <div class="banner-content">
+            <div class="logo-container">
+                <div class="logo">
+                    <img src="images/logofinal.png" alt="Logo de DinoWiki">
+                </div>
+                <div>
+                    <div class="site-title">DinoWiki</div>
+                    <div class="site-subtitle">Tu Enciclopedia Digital</div>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="cart-btn" onclick="openCart()" aria-label="Abrir carrito"><i class="fas fa-shopping-cart"></i><span class="lbl">Carrito</span><span class="cart-count" id="cartCount">0</span></button>
+                <button class="sound-toggle" onclick="toggleSound()">
+                    <i class="fas fa-volume-up" id="soundIcon"></i>
+                    <span id="soundText">Ambiente</span>
+                </button>
+                <div class="hamburger" onclick="toggleMenu()" id="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <nav>
+        <div class="nav-container" id="navMenu">
+            <a href="index.html"><i class="fas fa-home"></i> Inicio</a>
+            <a href="galeria.html"><i class="fas fa-images"></i> Dinoinfo</a>
+            <a href="descubrimientos.html"><i class="fas fa-flask"></i> Descubrimientos</a>
+            <a href="periodos.html"><i class="fas fa-history"></i> Períodos</a>
+            <a href="quiz beta.html"><i class="fas fa-question-circle"></i> Quiz</a>
+            <a href="tienda.html" class="active"><i class="fas fa-store"></i> Tienda</a>
+        </div>
+    </nav>
+
+    <div class="hero">
+        <h1>🛍️ Tienda DinoWiki 🦖</h1>
+        <p>Llevá la prehistoria a tu casa: peluches, libros, juguetes y accesorios inspirados en los dinosaurios que conocés en DinoWiki.</p>
+    </div>
+
+    <main>
+        <section class="section" id="productos">
+            <h2>🦕 Nuestros Productos</h2>
+            <div class="shop-tools">
+                <button class="filter-btn active" data-cat="all">Todos</button>
+                <button class="filter-btn" data-cat="peluches">🧸 Peluches</button>
+                <button class="filter-btn" data-cat="libros">📚 Libros</button>
+                <button class="filter-btn" data-cat="juguetes">🦖 Juguetes</button>
+                <button class="filter-btn" data-cat="ropa">👕 Ropa y accesorios</button>
+                <button class="filter-btn" data-cat="coleccion">🏺 Coleccionables</button>
+                <select class="sort-select" id="sortSel" aria-label="Ordenar productos">
+                    <option value="def">Destacados</option>
+                    <option value="asc">Precio: menor a mayor</option>
+                    <option value="desc">Precio: mayor a menor</option>
+                </select>
+            </div>
+            <div class="shop-grid" id="shopGrid"></div>
+            <p class="shop-note"><i class="fas fa-info-circle"></i> Al finalizar la compra te contactamos por WhatsApp para coordinar pago y envío.</p>
+        </section>
+    </main>
+
+    <div class="perks">
+        <div class="stat-card"><i class="fas fa-truck"></i><h3>Envíos a todo el país</h3><p>Mendoza y toda Argentina</p></div>
+        <div class="stat-card"><i class="fas fa-credit-card"></i><h3>Cuotas sin interés</h3><p>Con tarjetas seleccionadas</p></div>
+        <div class="stat-card"><i class="fas fa-shield-alt"></i><h3>Compra segura</h3><p>Cambios dentro de 30 días</p></div>
+        <div class="stat-card"><i class="fas fa-gift"></i><h3>Packaging regalo</h3><p>Ideal para pequeños paleontólogos</p></div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3><i class="fas fa-book-open"></i> Sobre DinoWiki</h3>
+                <p>DinoWiki es tu enciclopedia digital dedicada al fascinante mundo de los dinosaurios. Nuestra misión es hacer accesible el conocimiento paleontológico de manera educativa, precisa y entretenida para todas las edades.</p>
+                <p style="margin-top: 1rem;"><strong>Fundada en 2025</strong></p>
+            </div>
+
+            <div class="footer-section">
+                <h3><i class="fas fa-link"></i> Enlaces Rápidos</h3>
+                <a href="index.html"><i class="fas fa-chevron-right"></i> Inicio</a>
+                <a href="descubrimientos.html"><i class="fas fa-chevron-right"></i> Descubrimientos</a>
+                <a href="periodos.html"><i class="fas fa-chevron-right"></i> Períodos Geológicos</a>
+                <a href="galeria.html"><i class="fas fa-chevron-right"></i> Galería</a>
+                <a href="quiz beta.html"><i class="fas fa-chevron-right"></i> Quiz</a>
+                <a href="tienda.html"><i class="fas fa-chevron-right"></i> Tienda</a>
+            </div>
+
+            <div class="footer-section">
+                <h3><i class="fas fa-share-alt"></i> Síguenos</h3>
+                <p>Únete a nuestra comunidad de entusiastas de la paleontología y mantente actualizado con los últimos descubrimientos.</p>
+                <div class="social-links">
+                    <a href="#" aria-label="Facebook" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" aria-label="Twitter" title="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href=" https://www.instagram.com/dinowikiofficial?igsh=MWtqaHNpam10MTE0bw==" aria-label="Instagram" title="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="YouTube" title="YouTube"><i class="fab fa-youtube"></i></a>
+                    <a href="#" aria-label="TikTok" title="TikTok"><i class="fab fa-tiktok"></i></a>
+                    <a href=" https://discord.gg/8fpr25htVb" aria-label="Discord" title="Discord"><i class="fab fa-discord"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h3><i class="fas fa-envelope"></i> Contacto</h3>
+                <p><i class="fas fa-map-marker-alt"></i> Mendoza, Argentina</p>
+                <p><i class="fas fa-envelope"></i> Dinowikioficial@gmail.com</p>
+                <p><i class="fas fa-phone"></i> +54 9 2613 468800</p>
+                <p style="margin-top: 1rem;"><i class="fas fa-clock"></i> Lun - Vie: 9:00 - 18:00</p>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="footer-links">
+                <a href="#">Política de Privacidad</a>
+                <a href="#">Términos de Uso</a>
+                <a href="#">Política de Cookies</a>
+                <a href="#">Aviso Legal</a>
+                <a href="#">Accesibilidad</a>
+                <a href="#">Mapa del Sitio</a>
+            </div>
+            <p style="margin-top: 1.5rem;">&copy; 2025 DinoWiki. Todos los derechos reservados.</p>
+            <p>Contenido educativo y científico | Diseñado con 🦕 pasión por la paleontología</p>
+        </div>
+    </footer>
+
+    <button class="scroll-top" id="scrollTop" onclick="scrollToTop()">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <audio id="ambientSound" loop>
+        <source src="sounds/track1.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        // ===== Tienda =====
+        const PRODUCTS = [
+            {id:1,name:"Peluche T-Rex Rey",cat:"peluches",price:28900,old:34900,img:"peluche-trex",badge:"Más vendido",rating:5,rev:128,desc:"El rey del Cretácico, suave y abrazable. 35 cm de puro cariño."},
+            {id:2,name:"Peluche Triceratops",cat:"peluches",price:26900,img:"peluche-triceratops",rating:5,rev:94,desc:"Con gola acolchada y tres cuernos de felpa. 32 cm."},
+            {id:3,name:"Peluche Stegosaurus",cat:"peluches",price:25900,img:"peluche-stego",badge:"Nuevo",badgeType:"new",rating:4,rev:41,desc:"Placas dorsales bordadas y cola larga. 38 cm."},
+            {id:4,name:"Peluche Braquiosaurio Gigante",cat:"peluches",price:49900,img:"peluche-brachio",rating:5,rev:67,desc:"Cuello larguísimo, ideal para dormir abrazado. 80 cm."},
+            {id:5,name:"Enciclopedia Ilustrada de Dinosaurios",cat:"libros",price:32500,img:"libro-enciclopedia",badge:"Recomendado",rating:5,rev:203,desc:"La Wikipedia de dinosaurios en papel: más de 300 especies con fichas y mapas. Tapa dura, 320 págs."},
+            {id:6,name:"Atlas del Mesozoico y Dino Argentina (pack x2)",cat:"libros",price:41900,old:49800,img:"libro-atlas",rating:5,rev:76,desc:"Dos tomos: el mundo del Triásico al Cretácico y los gigantes hallados en Argentina."},
+            {id:7,name:"Set de 5 Figuras Articuladas",cat:"juguetes",price:19900,img:"juguete-figuras",rating:4,rev:112,desc:"Cinco dinosaurios de colección con detalles pintados a mano y base de exhibición."},
+            {id:8,name:"Kit de Excavación de Fósiles",cat:"juguetes",price:17500,img:"juguete-excavacion",badge:"Nuevo",badgeType:"new",rating:5,rev:58,desc:"Bloque de yeso, martillo y pincel para desenterrar tu propio esqueleto. ¡Sé paleontólogo por un día!"},
+            {id:9,name:"Remera DinoWiki",cat:"ropa",price:15900,img:"remera",rating:4,rev:35,desc:"Algodón peinado 100% con estampa de T-Rex. Talles S a XXL."},
+            {id:10,name:"Taza Estegosaurio",cat:"ropa",price:8900,img:"taza",rating:5,rev:89,desc:"Cerámica de 350 ml, apta lavavajillas y microondas."},
+            {id:11,name:"Póster Línea del Tiempo",cat:"coleccion",price:9500,img:"poster",rating:5,rev:47,desc:"Del Triásico al Cretácico en 60x90 cm, con los dinosaurios de cada era."},
+            {id:12,name:"Pack de 24 Stickers",cat:"coleccion",price:4500,old:5900,img:"stickers",badge:"-24%",rating:4,rev:152,desc:"Vinilo resistente al agua para notebooks, botellas y cuadernos."}
+        ];
+        const fmt = n => '$' + n.toLocaleString('es-AR');
+        let cart = {}, currentCat = 'all';
+        try { cart = JSON.parse(localStorage.getItem('dinoCart') || '{}'); } catch (e) { cart = {}; }
+        const saveCart = () => { try { localStorage.setItem('dinoCart', JSON.stringify(cart)); } catch (e) {} };
+
+        function stars(n){ return '<i class="fas fa-star"></i>'.repeat(n) + '<i class="far fa-star"></i>'.repeat(5 - n); }
+
+        function renderProducts() {
+            const sort = document.getElementById('sortSel').value;
+            let list = PRODUCTS.filter(p => currentCat === 'all' || p.cat === currentCat);
+            if (sort === 'asc') list.sort((a, b) => a.price - b.price);
+            if (sort === 'desc') list.sort((a, b) => b.price - a.price);
+            document.getElementById('shopGrid').innerHTML = list.map(p => `
+                <article class="product-card">
+                    ${p.badge ? `<span class="product-badge ${p.badgeType || ''}">${p.badge}</span>` : ''}
+                    <img src="images/merch/${p.img}.svg" alt="${p.name}" loading="lazy">
+                    <div class="product-body">
+                        <h3>${p.name}</h3>
+                        <p>${p.desc}</p>
+                        <div class="product-stars">${stars(p.rating)}<span>(${p.rev})</span></div>
+                        <div class="product-footer">
+                            <div class="price">${p.old ? `<small>${fmt(p.old)}</small>` : ''}${fmt(p.price)}</div>
+                            <button class="add-btn" onclick="addToCart(${p.id})"><i class="fas fa-cart-plus"></i> Agregar</button>
+                        </div>
+                    </div>
+                </article>`).join('');
+        }
+
+        function renderCart() {
+            const ids = Object.keys(cart).filter(id => PRODUCTS.some(p => p.id == id));
+            const box = document.getElementById('cartItems');
+            let total = 0, count = 0;
+            box.innerHTML = ids.length ? ids.map(id => {
+                const p = PRODUCTS.find(x => x.id == id), q = cart[id];
+                total += p.price * q; count += q;
+                return `<div class="cart-item"><img src="images/merch/${p.img}.svg" alt="">
+                    <div class="cart-item-info"><b>${p.name}</b>${fmt(p.price)}
+                        <div class="qty"><button onclick="changeQty(${p.id},-1)">−</button><span>${q}</span><button onclick="changeQty(${p.id},1)">+</button></div>
+                    </div><button class="cart-remove" onclick="changeQty(${p.id},-99)" aria-label="Quitar"><i class="fas fa-trash"></i></button></div>`;
+            }).join('') : '<div class="cart-empty"><i class="fas fa-egg"></i>Tu carrito está vacío.<br>¡Encontrá tu dinosaurio favorito!</div>';
+            document.getElementById('cartTotal').textContent = fmt(total);
+            document.getElementById('cartCount').textContent = count;
+            document.getElementById('checkoutBtn').disabled = !ids.length;
+        }
+
+        function toast(msg) {
+            const t = document.getElementById('toast');
+            t.textContent = msg; t.classList.add('show');
+            clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove('show'), 2000);
+        }
+        function addToCart(id) { cart[id] = (cart[id] || 0) + 1; saveCart(); renderCart(); toast('🦖 ' + PRODUCTS.find(p => p.id === id).name + ' agregado'); }
+        function changeQty(id, d) { cart[id] = (cart[id] || 0) + d; if (cart[id] <= 0) delete cart[id]; saveCart(); renderCart(); }
+        function openCart() { document.getElementById('cartDrawer').classList.add('open'); document.getElementById('cartOverlay').classList.add('open'); }
+        function closeCart() { document.getElementById('cartDrawer').classList.remove('open'); document.getElementById('cartOverlay').classList.remove('open'); }
+        function checkout() {
+            let total = 0;
+            const lines = Object.keys(cart).map(id => { const p = PRODUCTS.find(x => x.id == id); total += p.price * cart[id]; return `• ${cart[id]} x ${p.name} (${fmt(p.price * cart[id])})`; });
+            const msg = 'Hola DinoWiki! Quiero hacer este pedido:\n' + lines.join('\n') + '\nTotal: ' + fmt(total);
+            window.open('https://wa.me/5492613468800?text=' + encodeURIComponent(msg), '_blank');
+        }
+
+        document.querySelectorAll('.filter-btn').forEach(b => b.addEventListener('click', () => {
+            document.querySelectorAll('.filter-btn').forEach(x => x.classList.remove('active'));
+            b.classList.add('active'); currentCat = b.dataset.cat; renderProducts();
+        }));
+        document.getElementById('sortSel').addEventListener('change', renderProducts);
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeCart(); });
+
+        // Sonido ambiente
+        let isPlaying = false;
+        const audio = document.getElementById('ambientSound');
+        audio.volume = 0.3;
+
+        function toggleSound() {
+            const icon = document.getElementById('soundIcon');
+            const text = document.getElementById('soundText');
+            
+            if (!isPlaying) {
+                audio.play();
+                icon.className = 'fas fa-volume-up';
+                text.textContent = 'Sonando';
+                isPlaying = true;
+            } else {
+                audio.pause();
+                icon.className = 'fas fa-volume-mute';
+                text.textContent = 'Silencio';
+                isPlaying = false;
+            }
+        }
+
+        // Toggle menú móvil
+        function toggleMenu() {
+            const navMenu = document.getElementById('navMenu');
+            const hamburger = document.getElementById('hamburger');
+            navMenu.classList.toggle('active');
+            hamburger.classList.toggle('active');
+        }
+
+        // Cerrar menú al hacer clic en un enlace (móvil)
+        document.querySelectorAll('.nav-container a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                    const navMenu = document.getElementById('navMenu');
+                    const hamburger = document.getElementById('hamburger');
+                    navMenu.classList.remove('active');
+                    hamburger.classList.remove('active');
+                }
+            });
+        });
+
+        // Scroll to top
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Mostrar botón scroll
+        window.addEventListener('scroll', () => {
+            const btn = document.getElementById('scrollTop');
+            if (window.pageYOffset > 300) {
+                btn.classList.add('visible');
+            } else {
+                btn.classList.remove('visible');
+            }
+        });
+
+        // Smooth scroll para enlaces internos
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', () => {
+            renderProducts();
+            renderCart();
+        });
+
+        // Cerrar menú móvil al cambiar tamaño de ventana
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                if (window.innerWidth > 768) {
+                    const navMenu = document.getElementById('navMenu');
+                    const hamburger = document.getElementById('hamburger');
+                    navMenu.classList.remove('active');
+                    hamburger.classList.remove('active');
+                }
+            }, 250);
+        });
+    </script>
+<div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+    <aside class="cart-drawer" id="cartDrawer" aria-label="Carrito de compras">
+        <div class="cart-head"><span><i class="fas fa-shopping-cart"></i> Tu carrito</span><button onclick="closeCart()" aria-label="Cerrar">&times;</button></div>
+        <div class="cart-items" id="cartItems"></div>
+        <div class="cart-foot">
+            <div class="cart-total"><span>Total</span><span id="cartTotal">$0</span></div>
+            <button class="checkout-btn" id="checkoutBtn" onclick="checkout()"><i class="fab fa-whatsapp"></i> Finalizar compra</button>
+        </div>
+    </aside>
+    <div class="toast" id="toast"></div>
+</body>
+</html>

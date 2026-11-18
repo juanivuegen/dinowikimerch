@@ -1,0 +1,1945 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="images/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="images/favicon.svg" />
+    <link rel="shortcut icon" href="images/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png" />
+    <link rel="manifest" href="images/site.webmanifest" />
+    <title>DinoWiki - Enciclopedia de Dinosaurios</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            /* FONDO PERSONALIZADO - Coloca tu imagen en la carpeta images/ */
+            background-image: url('images/fondo_dinow.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            /* Capa de oscurecimiento para mejor legibilidad (puedes ajustar la opacidad) */
+            position:center;
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .banner {
+            background: linear-gradient(135deg, rgba(61, 90, 61, 0.95) 0%, rgba(90, 124, 90, 0.95) 100%);
+            backdrop-filter: blur(10px);
+            padding: 1.2rem 0;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 2px solid rgba(127, 183, 127, 0.3);
+        }
+
+        .banner-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            animation: slideInLeft 0.8s ease-out;
+        }
+
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .logo {
+            width: 90px;
+            height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
+        }
+
+        .logo:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .site-title {
+            color: #fff;
+            font-size: 2.5rem;
+            font-weight: bold;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.7);
+            letter-spacing: 2px;
+        }
+
+        .site-subtitle {
+            color: #d4e8d4;
+            font-size: 1rem;
+            font-weight: 300;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+        }
+
+        .sound-toggle {
+            background: rgba(127, 183, 127, 0.2);
+            border: 2px solid #7fb77f;
+            color: #fff;
+            padding: 0.7rem 1.2rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+        }
+
+        .sound-toggle:hover {
+            background: #7fb77f;
+            transform: scale(1.05);
+        }
+
+        .sound-toggle.playing {
+            background: #7fb77f;
+            box-shadow: 0 0 20px rgba(127, 183, 127, 0.5);
+            animation: soundPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes soundPulse {
+            0%, 100% { box-shadow: 0 0 10px rgba(127, 183, 127, 0.5); }
+            50% { box-shadow: 0 0 25px rgba(127, 183, 127, 0.8); }
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 6px;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .hamburger span {
+            width: 30px;
+            height: 3px;
+            background: linear-gradient(90deg, #fff, #a8d5a8);
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(9px, 9px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(9px, -9px);
+        }
+
+        nav {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            padding: 1.2rem 0;
+            animation: slideDown 0.5s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            padding: 0 2rem;
+            transition: max-height 0.3s ease;
+        }
+
+        nav a {
+            color: #3d5a3d;
+            text-decoration: none;
+            padding: 0.8rem 2rem;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 1.05rem;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #f0f7f0, #e8f5e8);
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        nav a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+            transition: left 0.5s ease;
+        }
+
+        nav a:hover::before {
+            left: 100%;
+        }
+
+        nav a:hover {
+            background: linear-gradient(135deg, #7fb77f, #5a9e5a);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(127, 183, 127, 0.4);
+        }
+
+        nav a i {
+            margin-right: 0.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        nav a:hover i {
+            transform: scale(1.2) rotate(10deg);
+        }
+
+        .hero {
+            max-width: 1200px;
+            margin: 3rem auto 2rem;
+            padding: 3rem 2rem;
+            text-align: center;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .search-container {
+    max-width: 700px;
+    margin: 2rem auto;
+    padding: 0 2rem;
+    position: relative;
+    z-index: 10;
+}
+
+.search-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 50px;
+    padding: 0.5rem 1.5rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    border: 2px solid rgba(127, 183, 127, 0.3);
+    transition: all 0.3s ease;
+}
+
+.search-box:focus-within {
+    border-color: #7fb77f;
+    box-shadow: 0 8px 40px rgba(127, 183, 127, 0.4);
+    transform: translateY(-2px);
+}
+
+.search-box i {
+    color: #7fb77f;
+    font-size: 1.3rem;
+    margin-right: 1rem;
+}
+
+#searchInput {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-size: 1.1rem;
+    padding: 0.8rem 0;
+    background: transparent;
+    color: #333;
+}
+
+#searchInput::placeholder {
+    color: #999;
+}
+
+.clear-search {
+    background: none;
+    border: none;
+    color: #999;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    display: none;
+    transition: all 0.3s ease;
+    border-radius: 50%;
+}
+
+.clear-search:hover {
+    color: #c94545;
+    background: rgba(201, 69, 69, 0.1);
+}
+
+.clear-search.visible {
+    display: block;
+}
+
+.search-results-count {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1rem;
+    margin-top: 1rem;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    font-weight: 600;
+}
+
+.highlight {
+    background: linear-gradient(120deg, #fff59d 0%, #ffeb3b 100%);
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-weight: 600;
+}
+
+.dino-card.hidden {
+    display: none;
+}
+
+article.hidden {
+    display: none;
+}
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            color: #e0e0e0;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.6);
+            margin-bottom: 1rem;
+            font-family: Georgia, serif;
+            letter-spacing: 2px;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color:rgba(255, 255, 255, 0.85);
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            line-height: 1.8;
+        }
+
+.no-results {
+    display: none;
+    text-align: center;
+    padding: 2rem;
+    background: rgba(255, 200, 200, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    margin: 2rem auto;
+    max-width: 600px;
+    color: #c94545;
+    font-weight: 600;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    animation: shake 0.5s ease;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+}
+
+.no-results i {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: 1rem;
+}
+        main {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        article {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            margin-bottom: 3rem;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            position: relative;
+            border: 1px solid rgba(127, 183, 127, 0.2);
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        article::before {
+            content: '🦕';
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            font-size: 4rem;
+            opacity: 0.05;
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        article h1 {
+            text-align: center;
+            color: #3d5a3d;
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 4px solid #7fb77f;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            font-family: Georgia, serif;
+            animation: titleGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes titleGlow {
+            0%, 100% { text-shadow: 0 0 10px rgba(127, 183, 127, 0.3); }
+            50% { text-shadow: 0 0 20px rgba(127, 183, 127, 0.6); }
+        }
+
+        .section-intro {
+            background: linear-gradient(135deg, #f0f7f0 0%, #e8f5e8 100%);
+            padding: 2rem;
+            margin-bottom: 3rem;
+            border-radius: 15px;
+            border-left: 6px solid #7fb77f;
+            font-style: italic;
+            color: #4a7e4a;
+            font-size: 1.15rem;
+            box-shadow: 0 4px 15px rgba(127, 183, 127, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section-intro::before {
+            content: '"';
+            position: absolute;
+            top: -20px;
+            left: 20px;
+            font-size: 6rem;
+            color: rgba(127, 183, 127, 0.1);
+            font-family: Georgia, serif;
+        }
+
+        .dino-card {
+            background: linear-gradient(135deg, #fefefe 0%, #f9fcf9 100%);
+            padding: 2.5rem;
+            margin-bottom: 3rem;
+            border-radius: 20px;
+            border: 2px solid #e8f5e8;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 2.5rem;
+            align-items: start;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dino-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(127, 183, 127, 0.1), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .dino-card:hover::before {
+            left: 100%;
+        }
+
+        .dino-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            border-color: #7fb77f;
+        }
+
+        .dino-image-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 15px;
+        }
+
+        .dino-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            border: 4px solid #f0f7f0;
+            transition: transform 0.5s ease;
+        }
+
+        .dino-card:hover img {
+            transform: scale(1.1) rotate(2deg);
+        }
+
+        .epoca-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: linear-gradient(135deg, #7fb77f, #5a9e5a);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            z-index: 10;
+        }
+
+        .dino-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .dino-card h2 {
+            color: #5a7c5a;
+            font-size: 2.3rem;
+            margin-bottom: 0.5rem;
+            font-family: Georgia, serif;
+            border-bottom: 3px solid #e8f5e8;
+            padding-bottom: 0.8rem;
+        }
+
+        .dino-card h2::before {
+            content: "🦖";
+            font-size: 2rem;
+            margin-right: 0.5rem;
+            animation: bounce 1s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .scientific-info {
+            background: linear-gradient(135deg, #f9fcf9, #f0f7f0);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border-left: 6px solid #7fb77f;
+            margin: 1rem 0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .scientific-info h3 {
+            color: #3d5a3d;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.8rem;
+            font-size: 1rem;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            background: white;
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .info-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 2px 8px rgba(127, 183, 127, 0.2);
+        }
+
+        .info-item strong {
+            color: #5a7c5a;
+            font-weight: 600;
+        }
+
+        .dino-card p {
+            color: #555;
+            font-size: 1.1rem;
+            line-height: 2;
+            text-align: justify;
+        }
+
+        .curiosity-box {
+            background: linear-gradient(135deg, #fff9e6 0%, #fff4d9 100%);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border-left: 6px solid #d4a02d;
+            margin-top: 1.5rem;
+            box-shadow: 0 4px 15px rgba(212, 160, 45, 0.2);
+        }
+
+        .curiosity-box h4 {
+            color: #b38825;
+            font-size: 1.1rem;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+        }
+
+        .curiosity-box h4::before {
+            content: "💡";
+            font-size: 1.5rem;
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { filter: drop-shadow(0 0 5px rgba(212, 160, 45, 0.5)); }
+            50% { filter: drop-shadow(0 0 15px rgba(212, 160, 45, 0.8)); }
+        }
+
+        #carnivoros .dino-card {
+            border-color: #ffe6e6;
+            background: linear-gradient(135deg, #fff5f5 0%, #ffe6e6 100%);
+        }
+
+        #carnivoros h1 {
+            color: #c94545;
+            border-bottom-color: #c94545;
+        }
+
+        #carnivoros .section-intro {
+            background: linear-gradient(135deg, #ffe6e6 0%, #ffd9d9 100%);
+            border-left-color: #c94545;
+            color: #a03636;
+        }
+
+        #carnivoros .dino-card h2 {
+            color: #c94545;
+        }
+
+        #carnivoros .scientific-info {
+            border-left-color: #c94545;
+        }
+
+        #herbivoros h1 {
+            color: #5a9e5a;
+            border-bottom-color: #5a9e5a;
+        }
+
+        #herbivoros .dino-card {
+            border-color: #e6f5e6;
+        }
+
+        #omnivoros h1 {
+            color: #d4a02d;
+            border-bottom-color: #d4a02d;
+        }
+
+        #omnivoros .section-intro {
+            background: linear-gradient(135deg, #fff9e6 0%, #fff4d9 100%);
+            border-left-color: #d4a02d;
+            color: #b38825;
+        }
+
+        #omnivoros .dino-card {
+            border-color: #fff9e6;
+            background: linear-gradient(135deg, #fffef5 0%, #fff9e6 100%);
+        }
+
+        #omnivoros .scientific-info {
+            border-left-color: #d4a02d;
+        }
+
+        .timeline-container {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .timeline-box {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 3rem 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(127, 183, 127, 0.3);
+        }
+
+        .timeline-box h2 {
+            text-align: center;
+            color: #3d5a3d;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            font-family: Georgia, serif;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        .timeline {
+            position: relative;
+            padding: 2rem 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, #c94545, #d4a02d, #5a9e5a);
+            border-radius: 2px;
+        }
+
+        .timeline-period {
+            position: relative;
+            margin-bottom: 3rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .timeline-period:nth-child(odd) {
+            flex-direction: row;
+        }
+
+        .timeline-period:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .timeline-content {
+            width: 45%;
+            padding: 1.5rem 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+            position: relative;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .timeline-content:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+        }
+
+        .triasico .timeline-content {
+            background: linear-gradient(135deg, #ffe6e6, #ffd9d9);
+            border-left: 5px solid #c94545;
+        }
+
+        .jurasico .timeline-content {
+            background: linear-gradient(135deg, #fff9e6, #fff4d9);
+            border-left: 5px solid #d4a02d;
+        }
+
+        .cretacico .timeline-content {
+            background: linear-gradient(135deg, #e6f5e6, #d9f0d9);
+            border-left: 5px solid #5a9e5a;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: white;
+            border: 4px solid;
+            z-index: 10;
+            box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.5);
+        }
+
+        .triasico .timeline-dot {
+            border-color: #c94545;
+        }
+
+        .jurasico .timeline-dot {
+            border-color: #d4a02d;
+        }
+
+        .cretacico .timeline-dot {
+            border-color: #5a9e5a;
+        }
+
+        .timeline-content h3 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            font-family: Georgia, serif;
+        }
+
+        .triasico h3 {
+            color: #c94545;
+        }
+
+        .jurasico h3 {
+            color: #d4a02d;
+        }
+
+        .cretacico h3 {
+            color: #5a9e5a;
+        }
+
+        .timeline-date {
+            font-size: 0.9rem;
+            font-weight: 600;
+            opacity: 0.8;
+            margin-bottom: 1rem;
+        }
+
+        .timeline-description {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        footer {
+            background: linear-gradient(135deg, #1a2a1a 0%, #0f1f0f 100%);
+            color: #d4e8d4;
+            padding: 4rem 2rem 1.5rem;
+            margin-top: 5rem;
+            border-top: 4px solid #7fb77f;
+            box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><path d="M0 0 L50 50 L100 0" stroke="rgba(127,183,127,0.05)" fill="none"/></svg>');
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-section h3 {
+            color: #7fb77f;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            font-family: Georgia, serif;
+            position: relative;
+            padding-bottom: 0.8rem;
+        }
+
+        .footer-section h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(90deg, #7fb77f, transparent);
+        }
+
+        .footer-section p {
+            color: #d4e8d4;
+            line-height: 1.9;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-section a {
+            color: #a8d5a8;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: block;
+            margin-bottom: 0.7rem;
+            padding-left: 0;
+        }
+
+        .footer-section a:hover {
+            color: #7fb77f;
+            padding-left: 10px;
+            text-shadow: 0 0 10px rgba(127, 183, 127, 0.5);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1.2rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .social-links a {
+            width: 50px;
+            height: 50px;
+            background: rgba(127, 183, 127, 0.15);
+            border: 2px solid #7fb77f;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-size: 1.3rem;
+            margin: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .social-links a::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: #7fb77f;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.4s ease, height 0.4s ease;
+            z-index: -1;
+        }
+
+        .social-links a:hover::before {
+            width: 100%;
+            height: 100%;
+        }
+
+        .social-links a:hover {
+            color: #1a2a1a;
+            transform: translateY(-5px) scale(1.15);
+            box-shadow: 0 8px 20px rgba(127, 183, 127, 0.5);
+            border-color: #5a9e5a;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(127, 183, 127, 0.3);
+            padding-top: 2rem;
+            margin-top: 2rem;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-bottom p {
+            color: #a8d5a8;
+            font-size: 0.95rem;
+            margin: 0.7rem 0;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: #a8d5a8;
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+        }
+
+        .footer-links a:hover {
+            color: #7fb77f;
+            background: rgba(127, 183, 127, 0.1);
+            text-decoration: none;
+        }
+
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #7fb77f, #5a9e5a);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            z-index: 999;
+        }
+
+        .scroll-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scroll-top:hover {
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 8px 25px rgba(127, 183, 127, 0.5);
+        }
+
+        @media (max-width: 968px) {
+            .dino-card {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+
+        }
+
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+
+            .banner-content {
+                justify-content: space-between;
+            }
+
+            .nav-container {
+                flex-direction: column;
+                align-items: center;
+                max-height: 0;
+                overflow: hidden;
+                padding: 0 2rem;
+            }
+
+            .nav-container.active {
+                max-height: 600px;
+                padding: 1.5rem 2rem;
+            }
+
+            nav a {
+                width: 100%;
+                text-align: center;
+            }
+
+            .logo {
+                width: 70px;
+                height: 70px;
+            }
+
+            .site-title {
+                font-size: 1.8rem;
+            }
+
+            article {
+                padding: 2rem 1.5rem;
+            }
+
+            article h1 {
+                font-size: 2rem;
+            }
+
+            .dino-card {
+                padding: 1.5rem;
+            }
+
+            .dino-card h2 {
+                font-size: 1.7rem;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .scroll-top {
+                width: 50px;
+                height: 50px;
+                bottom: 20px;
+                right: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="banner">
+        <div class="banner-content">
+            <div class="logo-container">
+                <a href="index.html" class="logo">
+                    <img src="images/logofinal.png" alt="DinoWiki Logo">
+                </a>
+        <div>
+        <div class="site-title">DinoWiki</div>
+        <div class="site-subtitle">Tu Enciclopedia Digital de Dinosaurios</div>
+        </div>
+            </div>
+            <button class="sound-toggle" id="soundToggle" onclick="toggleSound()">
+                <i class="fas fa-volume-up" id="soundIcon"></i>
+                <span id="soundText">Sonidos</span>
+            </button>
+            <div class="hamburger" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </div>
+<nav>
+    <div class="nav-container" id="navMenu">
+        <a href="index.html" class="active"><i class="fas fa-home"></i> Inicio</a>
+        <a href="galeria.html"><i class="fas fa-images"></i> Dinoinfo</a>
+        <a href="descubrimientos.html"><i class="fas fa-flask"></i> Descubrimientos</a>
+        <a href="periodos.html"><i class="fas fa-history"></i> Períodos</a>
+        <a href="quiz beta.html"><i class="fas fa-question-circle"></i> Quiz</a>
+        <a href="tienda.html"><i class="fas fa-store"></i> Tienda</a>
+    </div>
+</nav>
+
+    <nav>
+        <div class="nav-container" id="navMenu">
+            <a href="#carnivoros"><i class="fas fa-dragon"></i> Carnívoros</a>
+            <a href="#herbivoros"><i class="fas fa-leaf"></i> Herbívoros</a>
+            <a href="#omnivoros"><i class="fas fa-seedling"></i> Omnívoros</a>
+        </div>
+    </nav>
+
+    <div class="hero">
+        <h1>🦕 Bienvenido a DinoWiki 🦖</h1>
+        <p>Explora el fascinante mundo de los dinosaurios que dominaron la Tierra hace millones de años. Descubre sus increíbles adaptaciones, comportamientos y el legado que dejaron en nuestro planeta.</p>
+    </div>
+    
+<div class="search-container">
+    <div class="search-box">
+        <i class="fas fa-search"></i>
+        <input type="text" id="searchInput" placeholder="Buscar dinosaurios, períodos, características...">
+        <button class="clear-search" id="clearSearch" onclick="clearSearch()">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+    <div class="search-results-count" id="searchResultsCount"></div>
+</div>
+
+<div class="no-results" id="noResults">
+    <i class="fas fa-search-minus"></i>
+    <p>No se encontraron resultados para tu búsqueda.</p>
+    <p style="font-size: 0.9rem; margin-top: 0.5rem; opacity: 0.8;">Intenta con otros términos como "carnívoro", "Cretácico" o el nombre de un dinosaurio.</p>
+</div>
+
+    <main>
+        <article id="carnivoros">
+            <h1>Dinosaurios Carnívoros</h1>
+            
+            <div class="section-intro">
+                <strong>Los depredadores del Mesozoico:</strong> Los dinosaurios carnívoros fueron los cazadores supremos de su época, dominando la cadena alimenticia con su fuerza, velocidad y astucia. Estos fascinantes terópodos desarrollaron adaptaciones extraordinarias para la caza.
+            </div>
+            
+            <div class="dino-card" data-name="tyrannosaurus rex trex t-rex">
+                <div class="dino-image-container">
+                    <div class="epoca-badge">Cretácico Superior</div>
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBfogdo9B0YoT2VuautybBBHi7jElpm8iADQ&s" alt="Tyrannosaurus Rex">
+                </div>
+                <div class="dino-info">
+                    <h2>Tyrannosaurus Rex</h2>
+                    
+                    <div class="scientific-info">
+                        <h3>📋 Ficha Técnica</h3>
+                        <div class="info-grid">
+                            <div class="info-item"><strong>Período:</strong> Cretácico Superior</div>
+                            <div class="info-item"><strong>Época:</strong> 68-66 millones de años</div>
+                            <div class="info-item"><strong>Longitud:</strong> 12-13 metros</div>
+                            <div class="info-item"><strong>Peso:</strong> 8-14 toneladas</div>
+                            <div class="info-item"><strong>Ubicación:</strong> América del Norte</div>
+                            <div class="info-item"><strong>Dieta:</strong> Carnívoro</div>
+                        </div>
+                    </div>
+                    
+                    <p>El Tyrannosaurus Rex, cuyo nombre significa "Rey Lagarto Tirano", fue uno de los dinosaurios carnívoros más grandes y poderosos que jamás existieron. Con una mandíbula capaz de ejercer una fuerza de mordida de hasta 12,800 libras, era el depredador supremo de su ecosistema. Sus dientes, que podían medir hasta 30 centímetros de longitud, estaban diseñados para triturar huesos.</p>
+                    
+                    <div class="curiosity-box">
+                        <h4>Dato Curioso</h4>
+                        <p>A pesar de su tamaño masivo, estudios recientes sugieren que el T-Rex podía alcanzar velocidades de hasta 27 km/h, lo suficientemente rápido para perseguir a sus presas.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dino-card" data-name="velociraptor raptor">
+                <div class="dino-image-container">
+                    <div class="epoca-badge">Cretácico Superior</div>
+                    <img src="images/velociraptor.jpg" alt="Velociraptor">
+                </div>
+                <div class="dino-info">
+                    <h2>Velociraptor</h2>
+                    
+                    <div class="scientific-info">
+                        <h3>📋 Ficha Técnica</h3>
+                        <div class="info-grid">
+                            <div class="info-item"><strong>Período:</strong> Cretácico Superior</div>
+                            <div class="info-item"><strong>Época:</strong> 75-71 millones de años</div>
+                            <div class="info-item"><strong>Longitud:</strong> 2 metros</div>
+                            <div class="info-item"><strong>Peso:</strong> 15-20 kg</div>
+                            <div class="info-item"><strong>Ubicación:</strong> Mongolia, Asia</div>
+                            <div class="info-item"><strong>Dieta:</strong> Carnívoro</div>
+                        </div>
+                    </div>
+                    
+                    <p>El Velociraptor mongoliensis, cuyo nombre significa “Ladrón veloz”, fue un dinosaurio carnívoro de pequeño tamaño que vivió hace unos 75 millones de años en lo que hoy es Mongolia. Medía alrededor de 2 metros de largo y pesaba unos 15 kilogramos, pero compensaba su tamaño con agilidad e inteligencia. Poseía una garra curva y afilada en cada pie, usada para atacar y sujetar a sus presas. Además, estaba cubierto de plumas, lo que refuerza su parentesco con las aves modernas.</p>
+                    
+                    <div class="curiosity-box">
+                        <h4>Dato Curioso</h4>
+                        <p>Los fósiles muestran que el Velociraptor tenía plumas, lo que lo convierte en un ancestro cercano de las aves modernas. Su inteligencia era comparable a la de algunas aves actuales.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="dino-card" data-name="Giganotosaurus Giganoto">
+                <div class="dino-image-container">
+                    <div class="epoca-badge">Cretácico Tardío</div>
+                    <img src="images/Giganoto.png" alt="Giganotosaurus">
+                </div>
+                <div class="dino-info">
+                    <h2>Giganotosaurus</h2>
+                    
+                    <div class="scientific-info">
+                        <h3>📋 Ficha Técnica</h3>
+                        <div class="info-grid">
+                            <div class="info-item"><strong>Período:</strong> Cretácico Tardío</div>
+                            <div class="info-item"><strong>Época:</strong> 97 millones de años</div>
+                            <div class="info-item"><strong>Longitud:</strong> 12-13 metros</div>
+                            <div class="info-item"><strong>Peso:</strong> 8 Toneladas</div>
+                            <div class="info-item"><strong>Ubicación:</strong> Argentina, Sudamerica</div>
+                            <div class="info-item"><strong>Dieta:</strong> Carnívoro</div>
+                        </div>
+                    </div>
+                    
+                    <p>El Giganotosaurus carolinii, cuyo nombre significa “Reptil Gigante del Sur”, fue uno de los dinosaurios carnívoros más grandes que existieron, incluso superando en tamaño al famoso Tyrannosaurus rex. Este imponente depredador medía alrededor de 13 metros de largo y podía pesar hasta 8 toneladas. Poseía una mandíbula poderosa equipada con dientes de hasta 20 centímetros de longitud, con bordes afilados como cuchillas, ideales para desgarrar la carne de sus presas.</p>
+                    
+                    <div class="curiosity-box">
+                        <h4>Dato Curioso</h4>
+                        <p>El Giganotosaurus fue descubierto en 1993 por un aficionado argentino llamado Rubén Carolini mientras paseaba por la Patagonia.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dino-card" data-name="spinosaurus spino">
+                <div class="dino-image-container">
+                    <div class="epoca-badge">Cretácico Medio</div>
+                    <img src="images/spinosaurus.jpg" alt="Spinosaurus">
+                </div>
+                <div class="dino-info">
+                    <h2>Spinosaurus</h2>
+                    
+                    <div class="scientific-info">
+                        <h3>📋 Ficha Técnica</h3>
+                        <div class="info-grid">
+                            <div class="info-item"><strong>Período:</strong> Cretácico Medio</div>
+                            <div class="info-item"><strong>Época:</strong> 112-97 millones de años</div>
+                            <div class="info-item"><strong>Longitud:</strong> 15-18 metros</div>
+                            <div class="info-item"><strong>Peso:</strong> 7-20 toneladas</div>
+                            <div class="info-item"><strong>Ubicación:</strong> Norte de África</div>
+                            <div class="info-item"><strong>Dieta:</strong> Carnívoro/Piscívoro</div>
+                        </div>
+                    </div>
+                    
+                    <p>El Spinosaurus es el dinosaurio carnívoro más grande conocido, superando incluso al Tyrannosaurus Rex en tamaño. Su característica más distintiva es la enorme vela en su espalda, formada por espinas vertebrales que podían alcanzar 1.8 metros de altura. Era semiacuático y se alimentaba principalmente de peces, aunque también cazaba presas terrestres.</p>
+                    
+                    <div class="curiosity-box">
+                        <h4>Dato Curioso</h4>
+                        <p>Descubrimientos recientes revelan que el Spinosaurus era el primer dinosaurio nadador conocido, con una cola en forma de paleta que le permitía moverse eficientemente en el agua.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dino-card" data-name="Yutyrannus Yuty">
+                <div class="dino-image-container">
+                    <div class="epoca-badge">Cretácico Temprano</div>
+                    <img src="images/Yuty1.png" alt="Yutyrannus">
+                </div>
+                <div class="dino-info">
+                    <h2>Yutyrannus</h2>
+                    
+                    <div class="scientific-info">
+                        <h3>📋 Ficha Técnica</h3>
+                        <div class="info-grid">
+                            <div class="info-item"><strong>Período:</strong> Cretácico Temprano</div>
+                            <div class="info-item"><strong>Época:</strong> 125 millones de años</div>
+                            <div class="info-item"><strong>Longitud:</strong> 9 metros</div>
+                            <div class="info-item"><strong>Peso:</strong> 1-1,5 toneladas</div>
+                            <div class="info-item"><strong>Ubicación:</strong> China, Asia</div>
+                            <div class="info-item"><strong>Dieta:</strong> Carnívoro</div>
+                        </div>
+                    </div>
+                    
+                    <p>El Yutyrannus huali, cuyo nombre significa “Tirano con plumas hermosas”, fue un impresionante dinosaurio carnívoro que vivió hace unos 125 millones de años en lo que hoy es China, durante el período Cretácico temprano. Aunque no era tan grande como su famoso pariente el Tyrannosaurus rex, el Yutyrannus alcanzaba unos 9 metros de longitud y pesaba alrededor de 1,5 toneladas. Este era un cazador activo, oportunista y se cree que cazaba en grupos..</p>
+                    
+                    <div class="curiosity-box">
+                        <h4>Dato Curioso</h4>
+                        <p>El descubrimiento del Yutyrannus cambió por completo la imagen tradicional de los dinosaurios carnívoros. Hasta entonces, muchos científicos pensaban que solo los dinosaurios pequeños tenían plumas, pero este tirano emplumado demostro que las plumas podrian presentarse en dinosaurios grandes.</p>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <article id="herbivoros">
+            <h1>Dinosaurios Herbívoros</h1>
+            
+            <div class="section-intro">
+                <strong>Los gigantes gentiles:</strong> Los dinosaurios herbívoros fueron los animales terrestres más grandes que jamás existieron. Desarrollaron increíbles adaptaciones para procesar grandes cantidades de vegetación, desde largos cuellos hasta complejos sistemas digestivos.
+            </div>
+            
+            <div class="dino-card" data-name="triceratops tricera">
+                <div class="dino-image-container">
+                    <div class="epoca-badge">Cretácico Superior</div>
+                    <img src="images/triceratops.jpg" alt="Triceratops">
+                </div>
+                <div class="dino-info">
+                    <h2>Triceratops</h2>
+                    
+                    <div class="scientific-info">
+                        <h3>📋 Ficha Técnica</h3>
+                        <div class="info-grid">
+                            <div class="info-item"><strong>Período:</strong> Cretácico Superior</div>
+                            <div class="info-item"><strong>Época:</strong> 68-66 millones de años</div>
+                            <div class="info-item"><strong>Longitud:</strong> 7-9 metros</div>
+                            <div class="info-item"><strong>Peso:</strong> 6-12 toneladas</div>
+                            <div class="info-item"><strong>Ubicación:</strong> América del Norte</div>
+                            <div class="info-item"><strong>Dieta:</strong> Herbívoro</div>
+                        </div>
+                    </div>
+                    
+                    <p>El Triceratops, cuyo nombre significa "cara de tres cuernos", es uno de los dinosaurios más reconocibles y populares. Su enorme collar óseo y sus tres cuernos faciales lo hacían formidable tanto para la defensa como para el combate intraespecífico. Con un pico similar al de un loro y cientos de dientes en constante crecimiento, podía procesar la vegetación más dura.</p>
+                    
+                    <div class="curiosity-box">
+                        <h4>Dato Curioso</h4>
+                        <p>Se han encontrado fósiles de Triceratops con marcas de mordidas de T-Rex, evidenciando las épicas batallas entre estos dos titanes del Cretácico.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dino-card" data-name="brachiosaurus brachio">
+                <div class="dino-image-container">
+                    <div class="epoca-badge">Jurásico Superior</div>
+                    <img src="images/brachio" alt="Brachiosaurus">
+                </div>
+                <div class="dino-info">
+                    <h2>Brachiosaurus</h2>
+                    
+                    <div class="scientific-info">
+                        <h3>📋 Ficha Técnica</h3>
+                        <div class="info-grid">
+                            <div class="info-item"><strong>Período:</strong> Jurásico Superior</div>
+                            <div class="info-item"><strong>Época:</strong> 154-153 millones de años</div>
+                            <div class="info-item"><strong>Longitud:</strong> 20-26 metros</div>
+                            <div class="info-item"><strong>Peso:</strong> 28-58 toneladas</div>
+                            <div class="info-item"><strong>Ubicación:</strong> América del Norte, África</div>
+                            <div class="info-item"><strong>Dieta:</strong> Herbívoro</div>
+                        </div>
+                    </div>
+                    
+                    <p>El Brachiosaurus altithorax, cuyo nombre significa “Lagarto de brazos largos”, fue un gigantesco dinosaurio herbívoro que vivió hace unos 150 millones de años en América del Norte. Alcanzaba más de 25 metros de longitud y podía pesar 50 toneladas. Tenía las patas delanteras más largas que las traseras, lo que le daba una postura erguida y le permitía alcanzar las copas de los árboles para alimentarse. Su cuello largo y su gran tamaño lo convertían en una de las criaturas más majestuosas del Jurásico.</p>
+                    
+                    <div class="curiosity-box">
+                        <h4>Dato Curioso</h4>
+                        <p>Un Brachiosaurus adulto consumía aproximadamente 200 kg de vegetación al día. Sus fosas nasales estaban ubicadas en la parte superior de su cabeza, lo que inicialmente llevó a pensar que era acuático.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dino-card" data-name="Argentinosaurus">
+                <div class="dino-image-container">
+                    <div class="epoca-badge">Cretácico Tardío</div>
+                    <img src="images/Argentinosaurus.png" alt="Argentinosaurus">
+                </div>
+                <div class="dino-info">
+                    <h2>Argentinosaurus</h2>
+                    
+                    <div class="scientific-info">
+                        <h3>📋 Ficha Técnica</h3>
+                        <div class="info-grid">
+                            <div class="info-item"><strong>Período:</strong>Cretácico Tardío</div>
+                            <div class="info-item"><strong>Época:</strong> 95 millones de años</div>
+                            <div class="info-item"><strong>Longitud:</strong> 30 metros</div>
+                            <div class="info-item"><strong>Peso:</strong> 68-78 toneladas</div>
+                            <div class="info-item"><strong>Ubicación:</strong> Argentina, Sudamérica</div>
+                            <div class="info-item"><strong>Dieta:</strong> Herbívoro</div>
+                        </div>
+                    </div>
+                    
+                    <p>El Argentinosaurus huinculensis, cuyo nombre significa “Reptil de Argentina”, fue uno de los dinosaurios más grandes que han existido. Vivió hace unos 95 millones de años en la región que hoy es Patagonia, Argentina, durante el Cretácico Superior. Este coloso podía alcanzar más de 30 metros de longitud y pesar hasta 70 toneladas, Su cuerpo era enorme, con un cuello largo que le permitía alcanzar la vegetación más alta, y una cola poderosa que lo ayudaba a mantener el equilibrio. Aunque su tamaño lo protegía de depredadores, probablemente los más jóvenes y enfermos resultaban ser las presas más fáciles.</p>
+                    
+                    <div class="curiosity-box">
+                        <h4>Dato Curioso</h4>
+                        <p>A pesar de su peso, era sorprendentemente ágil gracias a tener huesos huecos. Debido a eso, el Argentinosaurus, podía alcanzar una velocidad máxima de 7.5 km/h, comparable a la de una tortuga.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dino-card" data-name="stegosaurus stego">
+                <div class="dino-image-container">
+                    <div class="epoca-badge">Jurásico Superior</div>
+                    <img src="images/stego.png" alt="Stegosaurus">
+                </div>
+                <div class="dino-info">
+                    <h2>Stegosaurus</h2>
+                    
+                    <div class="scientific-info">
+                        <h3>📋 Ficha Técnica</h3>
+                        <div class="info-grid">
+                            <div class="info-item"><strong>Período:</strong> Jurásico Superior</div>
+                            <div class="info-item"><strong>Época:</strong> 155-150 millones de años</div>
+                            <div class="info-item"><strong>Longitud:</strong> 7-9 metros</div>
+                            <div class="info-item"><strong>Peso:</strong> 2-5 toneladas</div>
+                            <div class="info-item"><strong>Ubicación:</strong> América del Norte</div>
+                            <div class="info-item"><strong>Dieta:</strong> Herbívoro</div>
+                        </div>
+                    </div>
+                    
+                    <p>El Stegosaurus stenops, cuyo nombre significa “Lagarto con techo”, fue un herbívoro acorazado que vivió hace unos 150 millones de años en América del Norte. Medía alrededor de 9 metros de largo y se distinguía por las grandes placas óseas alineadas en su espalda y por su cola con púas, conocida como thagomizer, que usaba para defenderse. Aunque tenía un cerebro muy pequeño en comparación con su cuerpo, era un dinosaurio bien adaptado a su entorno y símbolo del período Jurásico.</p>
+                    
+                    <div class="curiosity-box">
+                        <h4>Dato Curioso</h4>
+                        <p>Las púas de la cola del Stegosaurus, llamadas "thagomizer", podían medir hasta 90 cm y eran un arma mortal contra depredadores.</p>
+                    </div>
+                </div>
+            </div>
+
+             <div class="dino-card" data-name="Ankylosaurus">
+                <div class="dino-image-container">
+                    <div class="epoca-badge">Cretácico Tardío</div>
+                    <img src="images/Ankylosaurus.png" alt="Ankylosaurus">
+                </div>
+                <div class="dino-info">
+                    <h2>Ankylosaurus</h2>
+                    
+                    <div class="scientific-info">
+                        <h3>📋 Ficha Técnica</h3>
+                        <div class="info-grid">
+                            <div class="info-item"><strong>Período:</strong> Cretácico Tardío</div>
+                            <div class="info-item"><strong>Época:</strong> 66 millones de años</div>
+                            <div class="info-item"><strong>Longitud:</strong> cerca de 8 metros</div>
+                            <div class="info-item"><strong>Peso:</strong> 5-6 toneladas</div>
+                            <div class="info-item"><strong>Ubicación:</strong> América del Norte</div>
+                            <div class="info-item"><strong>Dieta:</strong> Herbívoro</div>
+                        </div>
+                    </div>
+                    
+                    <p>El Ankylosaurus magniventris, cuyo nombre significa “Lagarto acorazado de gran vientre”. Vivió hace unos 66 millones de años, al final del Cretácico, en lo que hoy es América del Norte. Medía alrededor de 8 metros de largo y pesaba cerca de 6 toneladas. Su cuerpo estaba cubierto por una armadura de placas óseas y espinas, que lo hacían casi invulnerable a los ataques de los grandes depredadores. En la punta de su cola tenía una pesada maza ósea, que podía usar como arma para defenderse con golpes devastadores..</p>
+                    
+                    <div class="curiosity-box">
+                        <h4>Dato Curioso</h4>
+                        <p>Un Brachiosaurus adulto consumía aproximadamente 200 kg de vegetación al día. Sus fosas nasales estaban ubicadas en la parte superior de su cabeza, lo que inicialmente llevó a pensar que era acuático.</p>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <article id="omnivoros">
+            <h1>Dinosaurios Omnívoros</h1>
+            
+            <div class="section-intro">
+                <strong>Los adaptables:</strong> Los dinosaurios omnívoros representan la versatilidad evolutiva, capaces de adaptarse a diversas fuentes de alimento. Esta flexibilidad dietética les permitió sobrevivir en ambientes cambiantes donde los especialistas fracasaban.
+            </div>
+            
+            <div class="dino-card" data-name="oviraptor ovi">
+                <div class="dino-image-container">
+                    <div class="epoca-badge">Cretácico Superior</div>
+                    <img src="images/Oviraptor.png" alt="Oviraptor">
+                </div>
+                <div class="dino-info">
+                    <h2>Oviraptor</h2>
+                    
+                    <div class="scientific-info">
+                        <h3>📋 Ficha Técnica</h3>
+                        <div class="info-grid">
+                            <div class="info-item"><strong>Período:</strong> Cretácico Superior</div>
+                            <div class="info-item"><strong>Época:</strong> 75-71 millones de años</div>
+                            <div class="info-item"><strong>Longitud:</strong> 1.5-2 metros</div>
+                            <div class="info-item"><strong>Peso:</strong> 20-40 kg</div>
+                            <div class="info-item"><strong>Ubicación:</strong> Mongolia, Asia</div>
+                            <div class="info-item"><strong>Dieta:</strong> Omnívoro</div>
+                        </div>
+                    </div>
+                    
+                    <p>El Oviraptor, cuyo nombre significa "ladrón de huevos", fue injustamente nombrado cuando se encontró su primer fósil cerca de huevos de dinosaurio. Descubrimientos posteriores revelaron que en realidad estaba incubando sus propios huevos, demostrando un comportamiento parental avanzado.</p>
+                    
+                    <div class="curiosity-box">
+                        <h4>Dato Curioso</h4>
+                        <p>El Oviraptor tenía una cresta en la cabeza similar a la de un casuario moderno, probablemente usada para exhibición y atracción de pareja.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dino-card" data-name="therizinosaurus therizi">
+                <div class="dino-image-container">
+                    <div class="epoca-badge">Cretácico Superior</div>
+                    <img src="images/Therizino" alt="Therizinosaurus">
+                </div>
+                <div class="dino-info">
+                    <h2>Therizinosaurus</h2>
+                    
+                    <div class="scientific-info">
+                        <h3>📋 Ficha Técnica</h3>
+                        <div class="info-grid">
+                            <div class="info-item"><strong>Período:</strong> Cretácico Superior</div>
+                            <div class="info-item"><strong>Época:</strong> 70 millones de años</div>
+                            <div class="info-item"><strong>Longitud:</strong> 4-5 metros</div>
+                            <div class="info-item"><strong>Peso:</strong> 4-5 toneladas</div>
+                            <div class="info-item"><strong>Ubicación:</strong> Mongolia, Asia</div>
+                            <div class="info-item"><strong>Dieta:</strong> Omnívoro/Herbívoro</div>
+                        </div>
+                    </div>
+                    
+                    <p>El Therizinosaurus cheloniformis, cuyo nombre significa “Lagarto guadaña”, fue un dinosaurio herbívoro o posiblemente omnívoro que vivió hace unos 70 millones de años en Asia. Medía hasta 10 metros de largo y pesaba cerca de 5 toneladas. Su característica más llamativa eran sus enormes garras, que podían medir más de 70 centímetros. Aunque su aspecto era temible, probablemente las usaba para arrastrar ramas o defenderse, no para cazar. Estaba cubierto de plumas y tenía un cuerpo robusto con un cuello largo.</p>
+                    
+                    <div class="curiosity-box">
+                        <h4>Dato Curioso</h4>
+                        <p>Cuando se descubrieron por primera vez las garras gigantes del Therizinosaurus en 1948, los paleontólogos pensaron que pertenecían a una tortuga gigante.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dino-card" data-name="Gallimimus">
+                <div class="dino-image-container">
+                    <div class="epoca-badge">Cretácico Tardío</div>
+                    <img src="images/Gallimimus.png" alt="Gallimimus">
+                </div>
+                <div class="dino-info">
+                    <h2>Gallimimus</h2>
+                    
+                    <div class="scientific-info">
+                        <h3>📋 Ficha Técnica</h3>
+                        <div class="info-grid">
+                            <div class="info-item"><strong>Período:</strong> Cretácico Tardío</div>
+                            <div class="info-item"><strong>Época:</strong> 70 millones de años</div>
+                            <div class="info-item"><strong>Longitud:</strong>6 metros</div>
+                            <div class="info-item"><strong>Peso:</strong> Cerca de 440 kilogramos</div>
+                            <div class="info-item"><strong>Ubicación:</strong> Mongolia, Asia</div>
+                            <div class="info-item"><strong>Dieta:</strong> Omnívoro</div>
+                        </div>
+                    </div>
+                    
+                    <p>El Gallimimus bullatus, cuyo nombre significa “Imitador de gallo”, fue un dinosaurio ágil y veloz que vivió hace unos 70 millones de años en lo que hoy es Mongolia. Medía unos 6 metros de largo, pero era ligero, lo que le permitía alcanzar altas velocidades al correr, probablemente para huir de los depredadores. Tenía un cuello largo, pico sin dientes y brazos delgados, adaptados para atrapar insectos o alimentarse de plantas pequeñas, por lo que se lo considera omnivoro. Su aspecto y rapidez le han valido el apodo de “el avestruz del Cretácico”.</p>
+                    
+                    <div class="curiosity-box">
+                        <h4>Dato Curioso</h4>
+                        <p>El Gallimimus es uno de los pocos dinosaurios que se hizo famoso gracias al cine: aparece corriendo en grupo en la película Jurassic Park (1993). Su nombre, que significa “imitador de gallo”, se debe a que su estructura ósea del cráneo recuerda a la de las aves modernas. Además, los científicos creen que podía alcanzar velocidades de hasta 60 km/h, lo que lo convierte en uno de los dinosaurios más rápidos conocidos.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="dino-card" data-name="troodon">
+                <div class="dino-image-container">
+                    <div class="epoca-badge">Cretácico Superior</div>
+                    <img src="images/Trodoon.png" alt="Troodon">
+                </div>
+                <div class="dino-info">
+                    <h2>Troodon</h2>
+                    
+                    <div class="scientific-info">
+                        <h3>📋 Ficha Técnica</h3>
+                        <div class="info-grid">
+                            <div class="info-item"><strong>Período:</strong> Cretácico Superior</div>
+                            <div class="info-item"><strong>Época:</strong> 77-74 millones de años</div>
+                            <div class="info-item"><strong>Longitud:</strong> 2-2.5 metros</div>
+                            <div class="info-item"><strong>Peso:</strong> 40-60 kg</div>
+                            <div class="info-item"><strong>Ubicación:</strong> América del Norte</div>
+                            <div class="info-item"><strong>Dieta:</strong> Omnívoro</div>
+                        </div>
+                    </div>
+                    
+                    <p>El Troodon formosus, cuyo nombre significa “Diente herido”, fue un pequeño dinosaurio carnívoro y omnívoro que vivió hace unos 75 millones de años en América del Norte. Medía cerca de 2,5 metros de largo y era muy ligero y veloz. Es considerado uno de los dinosaurios más inteligentes, gracias a su gran cerebro en relación con su cuerpo y a su visión estereoscópica, que le permitía calcular distancias con precisión. Su inteligencia y agilidad lo convertían en un cazador eficaz y curioso dentro del mundo prehistórico.</p>
+                    
+                    <div class="curiosity-box">
+                        <h4>Dato Curioso</h4>
+                        <p>Si los dinosaurios no se hubieran extinguido, algunos científicos especulan que el Troodon podría haber evolucionado hacia una especie con inteligencia comparable a la de los primates modernos.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dino-card" data-name="Deinocheirus">
+                <div class="dino-image-container">
+                    <div class="epoca-badge">Cretácico Tardío</div>
+                    <img src="images/Deinocheirous.png" alt="Deinocheirus">
+                </div>
+                <div class="dino-info">
+                    <h2>Deinocheirus</h2>
+                    
+                    <div class="scientific-info">
+                        <h3>📋 Ficha Técnica</h3>
+                        <div class="info-grid">
+                            <div class="info-item"><strong>Período:</strong> Cretácico Tardío</div>
+                            <div class="info-item"><strong>Época:</strong> 70 millones de años</div>
+                            <div class="info-item"><strong>Longitud:</strong> alrededor de 11 metros</div>
+                            <div class="info-item"><strong>Peso:</strong> 5-6 toneladas</div>
+                            <div class="info-item"><strong>Ubicación:</strong> Mongolia, Asia</div>
+                            <div class="info-item"><strong>Dieta:</strong> Omnívoro</div>
+                        </div>
+                    </div>
+                    
+                    <p>El Deinocheirus mirificus, cuyo nombre significa “Manos terribles y sorprendentes”, fue un dinosaurio de aspecto inusual que vivió hace unos 70 millones de años en Asia, durante el Cretácico tardío. Medía cerca de 11 metros de largo y pesaba alrededor de 6 toneladas. A pesar de su tamaño y sus enormes brazos con garras de más de 2 metros, no era un depredador, sino un omnivoro que se alimentaba de plantas, peces y pequeños animales. Su cuerpo estaba cubierto de plumas y una joroba en la espalda.</p>
+                    
+                    <div class="curiosity-box">
+                        <h4>Dato Curioso</h4>
+                        <p>La apariencia de su joroba se debe a que esta formada por huesos alargados, esto más su aspecto extraño y su dieta variada lo convirtieron en uno de los dinosaurios más singulares descubiertos hasta hoy.</p>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </main>
+
+
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3><i class="fas fa-book-open"></i> Sobre DinoWiki</h3>
+                <p>DinoWiki es tu enciclopedia digital dedicada al fascinante mundo de los dinosaurios. Nuestra misión es hacer accesible el conocimiento paleontológico de manera educativa, precisa y entretenida para todas las edades.</p>
+                <p style="margin-top: 1rem;"><strong>Fundada en 2025</strong></p>
+            </div>
+
+            <div class="footer-section">
+                <h3><i class="fas fa-link"></i> Enlaces Rápidos</h3>
+                <a href="#carnivoros"><i class="fas fa-chevron-right"></i> Dinosaurios Carnívoros</a>
+                <a href="#herbivoros"><i class="fas fa-chevron-right"></i> Dinosaurios Herbívoros</a>
+                <a href="#omnivoros"><i class="fas fa-chevron-right"></i> Dinosaurios Omnívoros</a>
+                <a href="index.html"><i class="fas fa-chevron-right"></i> Inicio</a>
+                <a href="descubrimientos.html"><i class="fas fa-chevron-right"></i> Descubrimientos</a>
+                <a href="periodos.html"><i class="fas fa-chevron-right"></i> Períodos Geológicos</a>
+                <a href="galeria.html"><i class="fas fa-chevron-right"></i> Galería</a>
+                <a href="quiz beta.html"><i class="fas fa-chevron-right"></i> Quiz</a>
+                <a href="tienda.html"><i class="fas fa-chevron-right"></i> Tienda</a>
+                
+            </div>
+
+            <div class="footer-section">
+                <h3><i class="fas fa-share-alt"></i> Síguenos</h3>
+                <p>Únete a nuestra comunidad de entusiastas de la paleontología y mantente actualizado con los últimos descubrimientos.</p>
+                <div class="social-links">
+                    <a href="#" aria-label="Facebook" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" aria-label="Twitter" title="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href=" https://www.instagram.com/dinowikiofficial?igsh=MWtqaHNpam10MTE0bw==" aria-label="Instagram" title="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="YouTube" title="YouTube"><i class="fab fa-youtube"></i></a>
+                    <a href="#" aria-label="TikTok" title="TikTok"><i class="fab fa-tiktok"></i></a>
+                    <a href=" https://discord.gg/8fpr25htVb" aria-label="Discord" title="Discord"><i class="fab fa-discord"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h3><i class="fas fa-envelope"></i> Contacto</h3>
+                <p><i class="fas fa-map-marker-alt"></i> Mendoza, Argentina</p>
+                <p><i class="fas fa-envelope"></i> Dinowikioficial@gmail.com</p>
+                <p><i class="fas fa-phone"></i> +54 9 2613 468800</p>
+                <p style="margin-top: 1rem;"><i class="fas fa-clock"></i> Lun - Vie: 9:00 - 18:00</p>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="footer-links">
+                <a href="#">Política de Privacidad</a>
+                <a href="#">Términos de Uso</a>
+                <a href="#">Política de Cookies</a>
+                <a href="#">Aviso Legal</a>
+                <a href="#">Accesibilidad</a>
+                <a href="#">Mapa del Sitio</a>
+            </div>
+            <p style="margin-top: 1.5rem;">&copy; 2025 DinoWiki. Todos los derechos reservados.</p>
+            <p>Contenido educativo y científico | Diseñado con 🦕 pasión por la paleontología</p>
+        </div>
+    </footer>
+
+    <button class="scroll-top" id="scrollTop" onclick="scrollToTop()">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <audio id="ambientSound" loop>
+        <source src="https://assets.mixkit.co/active_storage/sfx/2462/2462-preview.mp3" type="audio/mpeg">
+    </audio>
+
+<script>
+        let isPlaying = false;
+        const audio = document.getElementById('ambientSound');
+        audio.volume = 0.3;
+
+        function toggleSound() {
+            const soundToggle = document.getElementById('soundToggle');
+            const soundIcon = document.getElementById('soundIcon');
+            const soundText = document.getElementById('soundText');
+            
+            if (!isPlaying) {
+                audio.play();
+                isPlaying = true;
+                soundToggle.classList.add('playing');
+                soundIcon.className = 'fas fa-volume-up';
+                soundText.textContent = 'Sonando';
+            } else {
+                audio.pause();
+                isPlaying = false;
+                soundToggle.classList.remove('playing');
+                soundIcon.className = 'fas fa-volume-mute';
+                soundText.textContent = 'Silencio';
+            }
+        }
+
+        function toggleMenu() {
+            const navMenu = document.getElementById('navMenu');
+            const hamburger = document.querySelector('.hamburger');
+            navMenu.classList.toggle('active');
+            hamburger.classList.toggle('active');
+        }
+
+        document.querySelectorAll('.nav-container a').forEach(link => {
+            link.addEventListener('click', () => {
+                const navMenu = document.getElementById('navMenu');
+                const hamburger = document.querySelector('.hamburger');
+                if (window.innerWidth <= 768) {
+                    navMenu.classList.remove('active');
+                    hamburger.classList.remove('active');
+                }
+            });
+        });
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '0';
+                    entry.target.style.transform = 'translateY(20px)';
+                    setTimeout(() => {
+                        entry.target.style.transition = 'all 0.6s ease';
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }, 100);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.dino-card').forEach(card => {
+            observer.observe(card);
+        });
+
+        window.addEventListener('scroll', function() {
+            const scrollTop = document.getElementById('scrollTop');
+            if (window.pageYOffset > 300) {
+                scrollTop.classList.add('visible');
+            } else {
+                scrollTop.classList.remove('visible');
+            }
+        });
+
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // ============ AQUÍ EMPIEZA EL CÓDIGO NUEVO DE BÚSQUEDA ============
+        const searchInput = document.getElementById('searchInput');
+        const clearSearchBtn = document.getElementById('clearSearch');
+        const noResults = document.getElementById('noResults');
+        const searchResultsCount = document.getElementById('searchResultsCount');
+        const articles = document.querySelectorAll('main article');
+        const dinoCards = document.querySelectorAll('.dino-card');
+
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase().trim();
+            
+            if (searchTerm.length > 0) {
+                clearSearchBtn.classList.add('visible');
+            } else {
+                clearSearchBtn.classList.remove('visible');
+            }
+
+            performSearch(searchTerm);
+        });
+
+        function performSearch(searchTerm) {
+            let visibleCards = 0;
+
+            removeHighlights();
+
+            if (searchTerm === '') {
+                articles.forEach(article => article.classList.remove('hidden'));
+                dinoCards.forEach(card => card.classList.remove('hidden'));
+                noResults.style.display = 'none';
+                searchResultsCount.textContent = '';
+                return;
+            }
+
+            dinoCards.forEach(card => {
+                const cardText = card.textContent.toLowerCase();
+                const cardName = card.getAttribute('data-name') || '';
+                
+                if (cardText.includes(searchTerm) || cardName.includes(searchTerm)) {
+                    card.classList.remove('hidden');
+                    visibleCards++;
+                    highlightText(card, searchTerm);
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+
+            articles.forEach(article => {
+                const visibleCardsInArticle = article.querySelectorAll('.dino-card:not(.hidden)').length;
+                if (visibleCardsInArticle > 0) {
+                    article.classList.remove('hidden');
+                } else {
+                    article.classList.add('hidden');
+                }
+            });
+
+            if (visibleCards === 0) {
+                noResults.style.display = 'block';
+                searchResultsCount.textContent = '';
+            } else {
+                noResults.style.display = 'none';
+                searchResultsCount.textContent = `✔ ${visibleCards} resultado${visibleCards !== 1 ? 's' : ''} encontrado${visibleCards !== 1 ? 's' : ''}`;
+            }
+        }
+
+        function highlightText(element, searchTerm) {
+            const textElements = element.querySelectorAll('h2, p, .info-item, .curiosity-box p');
+            
+            textElements.forEach(el => {
+                highlightInElement(el, searchTerm);
+            });
+        }
+
+        function highlightInElement(element, searchTerm) {
+            if (!element.hasAttribute('data-original-text')) {
+                element.setAttribute('data-original-text', element.textContent);
+            }
+            
+            const originalText = element.getAttribute('data-original-text');
+            const regex = new RegExp(`(${escapeRegex(searchTerm)})`, 'gi');
+            
+            if (regex.test(originalText)) {
+                const highlightedText = originalText.replace(regex, '<span class="highlight">$1</span>');
+                element.innerHTML = highlightedText;
+            } else {
+                element.textContent = originalText;
+            }
+        }
+
+        function escapeRegex(string) {
+            return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        }
+
+        function removeHighlights() {
+            const elementsWithHighlight = document.querySelectorAll('[data-original-text]');
+            
+            elementsWithHighlight.forEach(element => {
+                const originalText = element.getAttribute('data-original-text');
+                element.textContent = originalText;
+            });
+        }
+
+        function clearSearch() {
+            searchInput.value = '';
+            clearSearchBtn.classList.remove('visible');
+            performSearch('');
+            searchInput.focus();
+        }
+
+        searchInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                clearSearch();
+            }
+        });
+</script>
+</body>
+</html>

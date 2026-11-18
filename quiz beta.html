@@ -1,0 +1,1871 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Pon a prueba tus conocimientos sobre dinosaurios con nuestro quiz interactivo">
+    <link rel="icon" type="image/png" href="images/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="images/favicon.svg" />
+    <link rel="shortcut icon" href="images/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png" />
+    <link rel="manifest" href="images/site.webmanifest" />
+    <title>Quiz Paleontológico - DinoWiki</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-green: #5a9e5a;
+            --dark-green: #3d5a3d;
+            --light-green: #7fb77f;
+            --bg-green: #e8f5e8;
+            --carnivore-red: #c94545;
+            --omnivore-gold: #d4a02d;
+            --shadow-main: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2c5f2d 0%, #1a3a1b 100%);
+            background-attachment: fixed;
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(127, 183, 127, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(127, 183, 127, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .banner {
+            background: linear-gradient(135deg, rgba(61, 90, 61, 0.98) 0%, rgba(90, 124, 90, 0.98) 100%);
+            backdrop-filter: blur(15px);
+            padding: 1rem 0;
+            box-shadow: var(--shadow-main);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 3px solid var(--light-green);
+        }
+
+        .banner-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+            gap: 1rem;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            animation: slideInLeft 0.8s ease-out;
+        }
+
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .logo {
+            width: 90px;
+            height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
+        }
+
+        .logo:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .site-title {
+            color: #fff;
+            font-size: 2rem;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            letter-spacing: 1px;
+        }
+
+        .site-subtitle {
+            color: #d4e8d4;
+            font-size: 0.9rem;
+            font-weight: 300;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .sound-toggle {
+            background: rgba(127, 183, 127, 0.2);
+            border: 2px solid var(--light-green);
+            color: #fff;
+            padding: 0.6rem 1rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .sound-toggle:hover {
+            background: var(--light-green);
+            transform: scale(1.05);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: #fff;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        nav {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            padding: 1rem 0;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            padding: 0 2rem;
+        }
+
+        nav a {
+            color: var(--dark-green);
+            text-decoration: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #f0f7f0, #e8f5e8);
+            position: relative;
+            overflow: hidden;
+        }
+
+        nav a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+            transition: left 0.5s ease;
+        }
+
+        nav a:hover::before {
+            left: 100%;
+        }
+
+        nav a:hover {
+            background: linear-gradient(135deg, var(--light-green), var(--primary-green));
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(127, 183, 127, 0.4);
+        }
+
+        .hero {
+            max-width: 1200px;
+            margin: 3rem auto 2rem;
+            padding: 3rem 2rem;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            color: #fff;
+            text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.7);
+            margin-bottom: 1rem;
+            font-family: Georgia, serif;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.9);
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        .quick-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-card i {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-green);
+        }
+
+        .stat-card h3 {
+            font-size: 2rem;
+            color: var(--dark-green);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .search-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .search-box {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow-main);
+        }
+
+        .search-input-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: white;
+            padding: 1rem 1.5rem;
+            border-radius: 50px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border: 2px solid var(--bg-green);
+            transition: all 0.3s ease;
+        }
+
+        .search-input-container:focus-within {
+            border-color: var(--light-green);
+            box-shadow: 0 4px 20px rgba(127, 183, 127, 0.3);
+        }
+
+        #searchInput {
+            border: none;
+            outline: none;
+            flex: 1;
+            font-size: 1.1rem;
+            color: #333;
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.95);
+            margin-bottom: 3rem;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow-main);
+        }
+
+        .section h2 {
+            text-align: center;
+            color: var(--dark-green);
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            font-family: Georgia, serif;
+            border-bottom: 4px solid var(--light-green);
+            padding-bottom: 1rem;
+        }
+
+        .dino-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .dino-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .dino-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .dino-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .dino-card-content {
+            padding: 1.5rem;
+        }
+
+        .dino-card h3 {
+            color: var(--dark-green);
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .dino-badge {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .carnivoro {
+            background: #ffe6e6;
+            color: var(--carnivore-red);
+        }
+
+        .herbivoro {
+            background: var(--bg-green);
+            color: var(--primary-green);
+        }
+
+        .omnivoro {
+            background: #fff9e6;
+            color: var(--omnivore-gold);
+        }
+
+        /* ===== FOOTER MEJORADO - TOMADO DE descubrimientos.html ===== */
+        /* Este es el footer más completo y profesional de todas las páginas */
+        /* Incluye: Secciones organizadas, enlaces rápidos actualizados, redes sociales con efectos, información de contacto */
+        footer {
+            background: linear-gradient(135deg, #1a2a1a 0%, #0f1f0f 100%);
+            color: #d4e8d4;
+            padding: 4rem 2rem 1.5rem;
+            margin-top: 5rem;
+            border-top: 4px solid #7fb77f;
+            box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+
+        /* Patrón decorativo de fondo del footer */
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><path d="M0 0 L50 50 L100 0" stroke="rgba(127,183,127,0.05)" fill="none"/></svg>');
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-section h3 {
+            color: #7fb77f;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            font-family: Georgia, serif;
+            position: relative;
+            padding-bottom: 0.8rem;
+        }
+
+        /* Línea decorativa debajo de los títulos del footer */
+        .footer-section h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(90deg, #7fb77f, transparent);
+        }
+
+        .footer-section p {
+            color: #d4e8d4;
+            line-height: 1.9;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        /* IMPORTANTE: Enlaces del footer con efecto hover mejorado */
+        .footer-section a {
+            color: #a8d5a8;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: block;
+            margin-bottom: 0.7rem;
+            padding-left: 0;
+        }
+
+        .footer-section a:hover {
+            color: #7fb77f;
+            padding-left: 10px;
+            text-shadow: 0 0 10px rgba(127, 183, 127, 0.5);
+        }
+
+        /* Redes sociales con efectos avanzados */
+        .social-links {
+            display: flex;
+            gap: 1.2rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .social-links a {
+            width: 50px;
+            height: 50px;
+            background: rgba(127, 183, 127, 0.15);
+            border: 2px solid #7fb77f;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-size: 1.3rem;
+            margin: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Efecto de relleno circular en hover de redes sociales */
+        .social-links a::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: #7fb77f;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.4s ease, height 0.4s ease;
+            z-index: -1;
+        }
+
+        .social-links a:hover::before {
+            width: 100%;
+            height: 100%;
+        }
+
+        .social-links a:hover {
+            color: #1a2a1a;
+            transform: translateY(-5px) scale(1.15);
+            box-shadow: 0 8px 20px rgba(127, 183, 127, 0.5);
+            border-color: #5a9e5a;
+        }
+
+        /* Sección inferior del footer con enlaces legales */
+        .footer-bottom {
+            border-top: 1px solid rgba(127, 183, 127, 0.3);
+            padding-top: 2rem;
+            margin-top: 2rem;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-bottom p {
+            color: #a8d5a8;
+            font-size: 0.95rem;
+            margin: 0.7rem 0;
+        }
+
+        /* Enlaces legales en el footer */
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: #a8d5a8;
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+        }
+
+        .footer-links a:hover {
+            color: #7fb77f;
+            background: rgba(127, 183, 127, 0.1);
+            text-decoration: none;
+        }
+        /* ===== FIN DEL FOOTER MEJORADO ===== */
+
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--light-green), var(--primary-green));
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            z-index: 999;
+        }
+
+        .scroll-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scroll-top:hover {
+            transform: translateY(-5px) scale(1.1);
+        }
+
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+
+            .nav-container {
+                flex-direction: column;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease;
+            }
+
+            .nav-container.active {
+                max-height: 500px;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .site-title {
+                font-size: 1.5rem;
+            }
+
+            .section {
+                padding: 2rem 1.5rem;
+            }
+
+            /* Footer responsivo */
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .footer-links {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-green: #5a9e5a;
+            --dark-green: #3d5a3d;
+            --light-green: #7fb77f;
+            --bg-green: #e8f5e8;
+            --correct-color: #4caf50;
+            --incorrect-color: #f44336;
+            --shadow-main: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2c5f2d 0%, #1a3a1b 100%);
+            background-attachment: fixed;
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(127, 183, 127, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(127, 183, 127, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .banner {
+            background: linear-gradient(135deg, rgba(61, 90, 61, 0.98) 0%, rgba(90, 124, 90, 0.98) 100%);
+            backdrop-filter: blur(15px);
+            padding: 1.2rem 0;
+            box-shadow: var(--shadow-main);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 3px solid var(--light-green);
+        }
+
+        .banner-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+
+        .site-title {
+            color: #fff;
+            font-size: 2.5rem;
+            font-weight: bold;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.7);
+            letter-spacing: 2px;
+        }
+
+        .site-subtitle {
+            color: #d4e8d4;
+            font-size: 1rem;
+            font-weight: 300;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 6px;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+        }
+
+        .hamburger span {
+            width: 30px;
+            height: 3px;
+            background: linear-gradient(90deg, #fff, #a8d5a8);
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        nav {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            padding: 1.2rem 0;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            padding: 0 2rem;
+        }
+
+        nav a {
+            color: #3d5a3d;
+            text-decoration: none;
+            padding: 0.8rem 2rem;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 1.05rem;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #f0f7f0, #e8f5e8);
+            position: relative;
+            overflow: hidden;
+        }
+
+        nav a:hover, nav a.active {
+            background: linear-gradient(135deg, #7fb77f, #5a9e5a);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(127, 183, 127, 0.4);
+        }
+
+        .hero {
+            max-width: 1200px;
+            margin: 3rem auto 2rem;
+            padding: 3rem 2rem;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            color: #fff;
+            text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.7);
+            margin-bottom: 1rem;
+            font-family: Georgia, serif;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.9);
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        main {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .quiz-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: var(--shadow-main);
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .quiz-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 3px solid var(--light-green);
+        }
+
+        .quiz-header h2 {
+            color: var(--dark-green);
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-family: Georgia, serif;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 30px;
+            background: #e0e0e0;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--light-green), var(--primary-green));
+            transition: width 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .question-counter {
+            font-size: 1.2rem;
+            color: #666;
+            font-weight: 600;
+        }
+
+        .start-screen, .question-screen, .result-screen {
+            display: none;
+        }
+
+        .start-screen.active, .question-screen.active, .result-screen.active {
+            display: block;
+        }
+
+        .start-screen {
+            text-align: center;
+        }
+
+        .difficulty-info {
+            background: linear-gradient(135deg, #f0f7f0, #e8f5e8);
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+            border-left: 5px solid var(--primary-green);
+        }
+
+        .difficulty-info h3 {
+            color: var(--dark-green);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .difficulty-info ul {
+            list-style: none;
+            padding-left: 1.5rem;
+        }
+
+        .difficulty-info li {
+            margin: 0.5rem 0;
+            color: #555;
+        }
+
+        .difficulty-info li::before {
+            content: "🦕";
+            margin-right: 0.5rem;
+        }
+
+        .start-btn {
+            background: linear-gradient(135deg, var(--light-green), var(--primary-green));
+            color: white;
+            padding: 1.2rem 3rem;
+            font-size: 1.3rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(90, 158, 90, 0.3);
+            margin-top: 2rem;
+        }
+
+        .start-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 25px rgba(90, 158, 90, 0.4);
+        }
+
+        .question-box {
+            margin: 2rem 0;
+        }
+
+        .question-text {
+            font-size: 1.4rem;
+            color: var(--dark-green);
+            font-weight: 600;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #f0f7f0, #e8f5e8);
+            border-radius: 12px;
+            border-left: 5px solid var(--primary-green);
+        }
+
+        .answers-grid {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .answer-btn {
+            background: white;
+            border: 3px solid #e0e0e0;
+            padding: 1.2rem 1.5rem;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+            text-align: left;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .answer-btn:hover:not(:disabled) {
+            border-color: var(--light-green);
+            transform: translateX(10px);
+            box-shadow: 0 4px 15px rgba(127, 183, 127, 0.2);
+        }
+
+        .answer-btn:disabled {
+            cursor: not-allowed;
+        }
+
+        .answer-btn.correct {
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+            border-color: var(--correct-color);
+            animation: correctPulse 0.5s ease;
+        }
+
+        .answer-btn.incorrect {
+            background: linear-gradient(135deg, #ffebee, #ffcdd2);
+            border-color: var(--incorrect-color);
+            animation: incorrectShake 0.5s ease;
+        }
+
+        @keyframes correctPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes incorrectShake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .answer-btn::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 5px;
+            height: 100%;
+            background: transparent;
+            transition: all 0.3s ease;
+        }
+
+        .answer-btn.correct::before {
+            background: var(--correct-color);
+        }
+
+        .answer-btn.incorrect::before {
+            background: var(--incorrect-color);
+        }
+
+        .explanation {
+            display: none;
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #fff9e6, #fff4d9);
+            border-radius: 12px;
+            border-left: 5px solid #d4a02d;
+        }
+
+        .explanation.show {
+            display: block;
+            animation: slideDown 0.5s ease;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .explanation h4 {
+            color: #b38825;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .next-btn {
+            background: linear-gradient(135deg, var(--light-green), var(--primary-green));
+            color: white;
+            padding: 1rem 2.5rem;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            margin-top: 2rem;
+            display: none;
+        }
+
+        .next-btn.show {
+            display: inline-block;
+        }
+
+        .next-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(90, 158, 90, 0.4);
+        }
+
+        .result-screen {
+            text-align: center;
+        }
+
+        .result-icon {
+            font-size: 8rem;
+            margin-bottom: 1rem;
+            animation: bounceIn 0.8s ease;
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .result-title {
+            font-size: 2.5rem;
+            color: var(--dark-green);
+            margin-bottom: 1rem;
+            font-family: Georgia, serif;
+        }
+
+        .result-score {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--primary-green);
+            margin: 1.5rem 0;
+        }
+
+        .result-message {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        .result-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #f0f7f0, #e8f5e8);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border-top: 4px solid var(--primary-green);
+        }
+
+        .stat-card h4 {
+            font-size: 2rem;
+            color: var(--primary-green);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card p {
+            color: #666;
+            font-weight: 600;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .action-btn {
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .retry-btn {
+            background: linear-gradient(135deg, var(--light-green), var(--primary-green));
+            color: white;
+        }
+
+        .share-btn {
+            background: linear-gradient(135deg, #64b5f6, #42a5f5);
+            color: white;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        footer {
+            background: linear-gradient(135deg, #1a2a1a 0%, #0f1f0f 100%);
+            color: #d4e8d4;
+            padding: 3rem 2rem 1.5rem;
+            margin-top: 5rem;
+            border-top: 4px solid #7fb77f;
+            text-align: center;
+        }
+
+        footer p {
+            color: #a8d5a8;
+            font-size: 0.95rem;
+            margin: 0.5rem 0;
+        }
+
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+
+            .nav-container {
+                flex-direction: column;
+                max-height: 0;
+                overflow: hidden;
+            }
+
+            .nav-container.active {
+                max-height: 600px;
+                padding: 1.5rem 2rem;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .quiz-container {
+                padding: 2rem 1.5rem;
+            }
+
+            .result-icon {
+                font-size: 5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="banner">
+        <div class="banner-content">
+<div class="logo-container">
+    <a href="index.html" class="logo">
+        <img src="images/logofinal.png" alt="DinoWiki Logo">
+    </a>
+    <div>
+        <div class="site-title">DinoWiki</div>
+        <div class="site-subtitle">Tu Enciclopedia Digital de Dinosaurios</div>
+    </div>
+</div>
+            <div class="hamburger" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </div>
+
+<nav>
+    <div class="nav-container" id="navMenu">
+        <a href="index.html" class="active"><i class="fas fa-home"></i> Inicio</a>
+        <a href="galeria.html"><i class="fas fa-images"></i> Dinoinfo</a>
+        <a href="descubrimientos.html"><i class="fas fa-flask"></i> Descubrimientos</a>
+        <a href="periodos.html"><i class="fas fa-history"></i> Períodos</a>
+        <a href="quiz beta.html"><i class="fas fa-question-circle"></i> Quiz</a>
+        <a href="tienda.html"><i class="fas fa-store"></i> Tienda</a>
+    </div>
+</nav>
+
+
+    <div class="hero">
+        <h1>🎯 Quiz Paleontológico</h1>
+        <p>¡Pon a prueba tus conocimientos sobre dinosaurios! Responde 15 preguntas y descubre qué tan experto eres en el mundo prehistórico.</p>
+    </div>
+
+    <main>
+        <div class="quiz-container">
+            <!-- Pantalla de Inicio -->
+            <div class="start-screen active">
+                <div class="quiz-header">
+                    <h2>¿Listo para el Desafío?</h2>
+                    <p style="color: #666; font-size: 1.1rem; margin-top: 1rem;">
+                        Tendrás 15 preguntas aleatorias sobre dinosaurios, períodos geológicos, anatomía y curiosidades paleontológicas.
+                    </p>
+                </div>
+
+                <div class="difficulty-info">
+                    <h3><i class="fas fa-info-circle"></i> Cómo Funciona</h3>
+                    <ul>
+                        <li>15 preguntas seleccionadas aleatoriamente</li>
+                        <li>Mezcla de preguntas de opción múltiple y verdadero/falso</li>
+                        <li>Explicación detallada después de cada respuesta</li>
+                        <li>Sistema de ranking basado en tu puntuación final</li>
+                        <li>Sin límite de tiempo - ¡tómate tu tiempo para pensar!</li>
+                    </ul>
+                </div>
+
+                <button class="start-btn" onclick="startQuiz()">
+                    <i class="fas fa-play"></i> Comenzar Quiz
+                </button>
+            </div>
+
+            <!-- Pantalla de Pregunta -->
+            <div class="question-screen">
+                <div class="quiz-header">
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" id="progressBar">0%</div>
+                    </div>
+                    <div class="question-counter">
+                        Pregunta <span id="currentQuestion">1</span> de <span id="totalQuestions">15</span>
+                    </div>
+                </div>
+
+                <div class="question-box">
+                    <div class="question-text" id="questionText"></div>
+                    <div class="answers-grid" id="answersGrid"></div>
+                    
+                    <div class="explanation" id="explanation">
+                        <h4><i class="fas fa-lightbulb"></i> Explicación</h4>
+                        <p id="explanationText"></p>
+                    </div>
+
+                    <button class="next-btn" id="nextBtn" onclick="nextQuestion()">
+                        Siguiente Pregunta <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Pantalla de Resultados -->
+            <div class="result-screen">
+                <div class="result-icon" id="resultIcon"></div>
+                <h2 class="result-title" id="resultTitle"></h2>
+                <div class="result-score">
+                    <span id="finalScore">0</span> / 15
+                </div>
+                <p class="result-message" id="resultMessage"></p>
+
+                <div class="result-stats">
+                    <div class="stat-card">
+                        <h4 id="correctCount">0</h4>
+                        <p>Correctas</p>
+                    </div>
+                    <div class="stat-card">
+                        <h4 id="incorrectCount">0</h4>
+                        <p>Incorrectas</p>
+                    </div>
+                    <div class="stat-card">
+                        <h4 id="accuracyPercent">0%</h4>
+                        <p>Precisión</p>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="action-btn retry-btn" onclick="location.reload()">
+                        <i class="fas fa-redo"></i> Intentar de Nuevo
+                    </button>
+                    <button class="action-btn share-btn" onclick="shareResults()">
+                        <i class="fas fa-share-alt"></i> Compartir Resultados
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <!-- Sección: Sobre DinoWiki -->
+            <div class="footer-section">
+                <h3><i class="fas fa-book-open"></i> Sobre DinoWiki</h3>
+                <p>DinoWiki es tu enciclopedia digital dedicada al fascinante mundo de los dinosaurios. Nuestra misión es hacer accesible el conocimiento paleontológico de manera educativa, precisa y entretenida para todas las edades.</p>
+                <p style="margin-top: 1rem;"><strong>Fundada en 2025</strong></p>
+            </div>
+
+            <!-- Sección: Enlaces Rápidos - ACTUALIZADA con todas las páginas -->
+            <div class="footer-section">
+                <h3><i class="fas fa-link"></i> Enlaces Rápidos</h3>
+                <!-- Para modificar estos enlaces, simplemente cambia el href y el texto -->
+                <a href="index.html"><i class="fas fa-chevron-right"></i> Inicio</a>
+                <a href="descubrimientos.html"><i class="fas fa-chevron-right"></i> Descubrimientos</a>
+                <a href="periodos.html"><i class="fas fa-chevron-right"></i> Períodos Geológicos</a>
+                <a href="galeria.html"><i class="fas fa-chevron-right"></i> Galería</a>
+                <a href="quiz beta.html"><i class="fas fa-chevron-right"></i> Quiz</a>
+                <a href="tienda.html"><i class="fas fa-chevron-right"></i> Tienda</a>
+            </div>
+
+            <!-- Sección: Redes Sociales con efectos mejorados -->
+            <div class="footer-section">
+                <h3><i class="fas fa-share-alt"></i> Síguenos</h3>
+                <p>Únete a nuestra comunidad de entusiastas de la paleontología y mantente actualizado con los últimos descubrimientos.</p>
+                <!-- Para modificar las redes sociales, cambia el href y el aria-label -->
+                <div class="social-links">
+                    <a href="#" aria-label="Facebook" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" aria-label="Twitter" title="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href=" https://www.instagram.com/dinowikiofficial?igsh=MWtqaHNpam10MTE0bw==" aria-label="Instagram" title="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="YouTube" title="YouTube"><i class="fab fa-youtube"></i></a>
+                    <a href="#" aria-label="TikTok" title="TikTok"><i class="fab fa-tiktok"></i></a>
+                    <a href=" https://discord.gg/8fpr25htVb" aria-label="Discord" title="Discord"><i class="fab fa-discord"></i></a>
+                </div>
+            </div>
+
+            <!-- Sección: Información de Contacto -->
+            <div class="footer-section">
+                <h3><i class="fas fa-envelope"></i> Contacto</h3>
+                <!-- Para modificar los datos de contacto, cambia el texto dentro de las etiquetas <p> -->
+                <p><i class="fas fa-map-marker-alt"></i> Mendoza, Argentina</p>
+                <p><i class="fas fa-envelope"></i> Dinowikioficial@gmail.com</p>
+                <p><i class="fas fa-phone"></i> +54 9 2613 468800</p>
+                <p style="margin-top: 1rem;"><i class="fas fa-clock"></i> Lun - Vie: 9:00 - 18:00</p>
+            </div>
+        </div>
+
+        <!-- Sección inferior del footer con enlaces legales y copyright -->
+        <div class="footer-bottom">
+            <!-- Enlaces legales - Para modificar, cambia el href y el texto -->
+            <div class="footer-links">
+                <a href="#">Política de Privacidad</a>
+                <a href="#">Términos de Uso</a>
+                <a href="#">Política de Cookies</a>
+                <a href="#">Aviso Legal</a>
+                <a href="#">Accesibilidad</a>
+                <a href="#">Mapa del Sitio</a>
+            </div>
+            <!-- Información de copyright - Para modificar el año, cambia el número -->
+            <p style="margin-top: 1.5rem;">&copy; 2025 DinoWiki. Todos los derechos reservados.</p>
+            <p>Contenido educativo y científico | Diseñado con 🦕 pasión por la paleontología</p>
+        </div>
+    </footer>
+
+    <script>
+        // Base de datos completa de preguntas (50+ preguntas)
+        const questionsBank = [
+            {
+                question: "¿Qué significa 'Tyrannosaurus Rex'?",
+                answers: ["Rey Lagarto Tirano", "Lagarto Terrible", "Dragón Poderoso", "Bestia Gigante"],
+                correct: 0,
+                explanation: "Tyrannosaurus Rex significa 'Rey Lagarto Tirano' en latín. 'Tyranno' significa tirano, 'saurus' significa lagarto, y 'Rex' significa rey."
+            },
+            {
+                question: "¿En qué período vivió el T-Rex?",
+                answers: ["Triásico", "Jurásico", "Cretácico", "Pérmico"],
+                correct: 2,
+                explanation: "El T-Rex vivió durante el Cretácico Superior, hace aproximadamente 68-66 millones de años, justo antes de la extinción masiva."
+            },
+            {
+                question: "¿Cuántos cuernos tiene un Triceratops?",
+                answers: ["Dos", "Tres", "Cuatro", "Cinco"],
+                correct: 1,
+                explanation: "El Triceratops tiene tres cuernos: dos grandes cuernos sobre los ojos y un cuerno más pequeño en el hocico."
+            },
+            {
+                question: "¿Los dinosaurios y los humanos coexistieron?",
+                answers: ["Verdadero", "Falso"],
+                correct: 1,
+                explanation: "Falso. Los dinosaurios no aviares se extinguieron hace 66 millones de años, mientras que los humanos modernos aparecieron hace solo unos 300,000 años."
+            },
+            {
+                question: "¿Cuál fue el dinosaurio más grande conocido?",
+                answers: ["T-Rex", "Brachiosaurus", "Argentinosaurus", "Spinosaurus"],
+                correct: 2,
+                explanation: "El Argentinosaurus es considerado el dinosaurio más grande, con un peso estimado de 70-100 toneladas y hasta 35 metros de longitud."
+            },
+            {
+                question: "¿Qué causó la extinción de los dinosaurios?",
+                answers: ["Envejecimiento natural", "Impacto de asteroide", "Glaciación", "Enfermedades"],
+                correct: 1,
+                explanation: "Un asteroide de 10 km impactó en Chicxulub, México hace 66 millones de años, causando cambios climáticos catastróficos que llevaron a la extinción masiva."
+            },
+            {
+                question: "¿Las aves descienden de los dinosaurios?",
+                answers: ["Verdadero", "Falso"],
+                correct: 0,
+                explanation: "Verdadero. Las aves son técnicamente dinosaurios terópodos que sobrevivieron la extinción K-Pg. Son los únicos dinosaurios vivos hoy en día."
+            },
+            {
+                question: "¿Cuál era la función principal de las placas del Stegosaurus?",
+                answers: ["Defensa", "Termorregulación", "Vuelo", "Natación"],
+                correct: 1,
+                explanation: "Las placas del Stegosaurus servían principalmente para termorregulación, ayudando a controlar su temperatura corporal, aunque también podían usarse para exhibición."
+            },
+            {
+                question: "¿Cuánto duró la Era Mesozoica?",
+                answers: ["50 millones de años", "100 millones de años", "186 millones de años", "250 millones de años"],
+                correct: 2,
+                explanation: "La Era Mesozoica duró aproximadamente 186 millones de años, desde hace 252 hasta 66 millones de años, e incluye los períodos Triásico, Jurásico y Cretácico."
+            },
+            {
+                question: "¿El Velociraptor tenía plumas?",
+                answers: ["Verdadero", "Falso"],
+                correct: 0,
+                explanation: "Verdadero. Evidencia fósil muestra que el Velociraptor estaba cubierto de plumas, similar a las aves modernas."
+            },
+            {
+                question: "¿Cuál era el tamaño real del Velociraptor?",
+                answers: ["Como un pollo", "Como un pavo", "Como un humano", "Como un elefante"],
+                correct: 1,
+                explanation: "El Velociraptor real era del tamaño de un pavo grande, midiendo aproximadamente 2 metros de largo y pesando solo 15-20 kg."
+            },
+            {
+                question: "¿Qué dinosaurio tenía el cerebro más grande en proporción a su cuerpo?",
+                answers: ["T-Rex", "Troodon", "Stegosaurus", "Brachiosaurus"],
+                correct: 1,
+                explanation: "El Troodon tenía el cerebro más grande en proporción a su tamaño corporal, lo que sugiere que era uno de los dinosaurios más inteligentes."
+            },
+            {
+                question: "¿El Spinosaurus era acuático?",
+                answers: ["Verdadero", "Falso"],
+                correct: 0,
+                explanation: "Verdadero. El Spinosaurus es el primer dinosaurio confirmado como semiacuático, con adaptaciones para nadar como una cola en forma de paleta."
+            },
+            {
+                question: "¿Cuántos dientes podía tener un T-Rex?",
+                answers: ["20-30", "40-50", "50-60", "80-90"],
+                correct: 2,
+                explanation: "Un T-Rex adulto tenía aproximadamente 50-60 dientes, algunos de hasta 30 cm de longitud, diseñados para triturar huesos."
+            },
+            {
+                question: "¿Qué período vino primero?",
+                answers: ["Jurásico", "Cretácico", "Triásico", "Paleógeno"],
+                correct: 2,
+                explanation: "El Triásico fue el primer período de la Era Mesozoica (252-201 millones de años), seguido por el Jurásico y luego el Cretácico."
+            },
+            {
+                question: "¿Los dinosaurios ponían huevos?",
+                answers: ["Verdadero", "Falso"],
+                correct: 0,
+                explanation: "Verdadero. Todos los dinosaurios ponían huevos, al igual que las aves modernas (que son sus descendientes directos)."
+            },
+            {
+                question: "¿Cuál es el fósil de dinosaurio más antiguo conocido?",
+                answers: ["Eoraptor", "T-Rex", "Triceratops", "Velociraptor"],
+                correct: 0,
+                explanation: "El Eoraptor, que vivió hace aproximadamente 231 millones de años en el Triásico, es uno de los dinosaurios más antiguos conocidos."
+            },
+            {
+                question: "¿Cuánto pesaba un Brachiosaurus adulto?",
+                answers: ["5-10 toneladas", "15-20 toneladas", "28-58 toneladas", "100-150 toneladas"],
+                correct: 2,
+                explanation: "Un Brachiosaurus adulto pesaba entre 28-58 toneladas, similar al peso de 10-12 elefantes africanos."
+            },
+            {
+                question: "¿El Stegosaurus y el T-Rex vivieron al mismo tiempo?",
+                answers: ["Verdadero", "Falso"],
+                correct: 1,
+                explanation: "Falso. El Stegosaurus vivió hace 155-150 millones de años (Jurásico), mientras que el T-Rex vivió hace 68-66 millones de años (Cretácico)."
+            },
+            {
+                question: "¿Qué dinosaurio tenía las garras más largas?",
+                answers: ["Velociraptor", "Therizinosaurus", "T-Rex", "Spinosaurus"],
+                correct: 1,
+                explanation: "El Therizinosaurus tenía las garras más largas de cualquier animal conocido, alcanzando hasta 1 metro de longitud."
+            },
+            {
+                question: "¿Cuántos continentes tenía la Tierra durante el Triásico?",
+                answers: ["Uno (Pangea)", "Tres", "Cinco", "Siete"],
+                correct: 0,
+                explanation: "Durante el Triásico, todos los continentes estaban unidos en un supercontinente llamado Pangea, que comenzó a fragmentarse en el Jurásico."
+            },
+            {
+                question: "¿El Diplodocus podía pararse en dos patas?",
+                answers: ["Verdadero", "Falso"],
+                correct: 1,
+                explanation: "Falso. Aunque se pensó alguna vez, estudios modernos indican que el Diplodocus siempre caminaba en cuatro patas debido a su estructura ósea."
+            },
+            {
+                question: "¿Qué comía principalmente el Oviraptor?",
+                answers: ["Solo carne", "Solo plantas", "Huevos de otros dinosaurios", "Dieta variada (omnívoro)"],
+                correct: 3,
+                explanation: "A pesar de su nombre ('ladrón de huevos'), el Oviraptor era omnívoro, comiendo plantas, pequeños animales, e insectos."
+            },
+            {
+                question: "¿Cuál era la velocidad máxima estimada del T-Rex?",
+                answers: ["10-15 km/h", "20-27 km/h", "40-50 km/h", "60-70 km/h"],
+                correct: 1,
+                explanation: "Estudios biomecánicos sugieren que el T-Rex podía alcanzar velocidades de 20-27 km/h, suficiente para perseguir presas grandes."
+            },
+            {
+                question: "¿El Ankylosaurus tenía una cola con forma de maza?",
+                answers: ["Verdadero", "Falso"],
+                correct: 0,
+                explanation: "Verdadero. El Ankylosaurus tenía una enorme cola con una maza ósea al final que podía romper huesos con un solo golpe."
+            },
+            {
+                question: "¿Cuánto medía el cuello del Brachiosaurus?",
+                answers: ["3 metros", "6 metros", "9 metros", "12 metros"],
+                correct: 2,
+                explanation: "El cuello del Brachiosaurus podía alcanzar hasta 9 metros de longitud, permitiéndole alimentarse de las copas de los árboles más altos."
+            },
+            {
+                question: "¿Los Pterosaurios eran dinosaurios?",
+                answers: ["Verdadero", "Falso"],
+                correct: 1,
+                explanation: "Falso. Los Pterosaurios eran reptiles voladores contemporáneos de los dinosaurios, pero pertenecían a un grupo diferente."
+            },
+            {
+                question: "¿Qué dinosaurio tenía más de 500 dientes?",
+                answers: ["T-Rex", "Triceratops", "Nigersaurus", "Velociraptor"],
+                correct: 2,
+                explanation: "El Nigersaurus tenía más de 500 dientes delgados dispuestos en filas, reemplazándolos constantemente para cortar plantas."
+            },
+            {
+                question: "¿Cuánto consumía un Brachiosaurus al día?",
+                answers: ["50 kg", "100 kg", "200 kg", "500 kg"],
+                correct: 2,
+                explanation: "Un Brachiosaurus adulto consumía aproximadamente 200 kg de vegetación al día para mantener su enorme tamaño."
+            },
+            {
+                question: "¿El Microraptor podía volar?",
+                answers: ["Verdadero", "Falso"],
+                correct: 0,
+                explanation: "Verdadero. El Microraptor tenía cuatro alas (plumas en brazos y patas) y podía planear entre árboles."
+            },
+            {
+                question: "¿Cuántos dedos tenía el T-Rex en cada mano?",
+                answers: ["Uno", "Dos", "Tres", "Cuatro"],
+                correct: 1,
+                explanation: "El T-Rex tenía solo dos dedos en cada mano, con garras afiladas, aunque sus brazos eran cortos en proporción."
+            },
+            {
+                question: "¿El Pachycephalosaurus usaba su cabeza para combatir?",
+                answers: ["Verdadero", "Falso"],
+                correct: 0,
+                explanation: "Verdadero. El Pachycephalosaurus tenía un cráneo abovedado de hasta 25 cm de grosor, probablemente usado en combates por dominancia."
+            },
+            {
+                question: "¿Qué dinosaurio tenía la mordida más poderosa?",
+                answers: ["Spinosaurus", "T-Rex", "Giganotosaurus", "Allosaurus"],
+                correct: 1,
+                explanation: "El T-Rex tenía la mordida más poderosa de todos los dinosaurios terrestres, con una fuerza de hasta 12,800 libras (5,800 kg)."
+            },
+            {
+                question: "¿Los dinosaurios eran de sangre fría?",
+                answers: ["Verdadero", "Falso"],
+                correct: 1,
+                explanation: "Falso. Evidencia reciente sugiere que muchos dinosaurios eran mesotérmicos o incluso endotérmicos (sangre caliente)."
+            },
+            {
+                question: "¿Cuánto duró el período Jurásico?",
+                answers: ["30 millones de años", "56 millones de años", "80 millones de años", "100 millones de años"],
+                correct: 1,
+                explanation: "El período Jurásico duró aproximadamente 56 millones de años, desde hace 201 hasta 145 millones de años."
+            },
+            {
+                question: "¿El Compsognathus era uno de los dinosaurios más pequeños?",
+                answers: ["Verdadero", "Falso"],
+                correct: 0,
+                explanation: "Verdadero. El Compsognathus medía solo 60 cm de largo y pesaba alrededor de 3 kg, similar a un pollo moderno."
+            },
+            {
+                question: "¿Dónde se encontró el primer fósil de T-Rex?",
+                answers: ["China", "Argentina", "Estados Unidos", "Mongolia"],
+                correct: 2,
+                explanation: "El primer esqueleto de T-Rex fue descubierto en Montana, Estados Unidos, en 1902 por Barnum Brown."
+            },
+            {
+                question: "¿El Deinonychus cazaba en manadas?",
+                answers: ["Verdadero", "Falso"],
+                correct: 0,
+                explanation: "Verdadero. Evidencia fósil sugiere que el Deinonychus cazaba cooperativamente en grupos, similar a los lobos modernos."
+            },
+            {
+                question: "¿Cuántos años vivía un T-Rex en promedio?",
+                answers: ["10-15 años", "20-30 años", "40-50 años", "60-70 años"],
+                correct: 1,
+                explanation: "Los estudios de anillos de crecimiento óseo sugieren que un T-Rex vivía aproximadamente 20-30 años en estado salvaje."
+            },
+            {
+                question: "¿El Parasaurolophus tenía una cresta hueca en la cabeza?",
+                answers: ["Verdadero", "Falso"],
+                correct: 0,
+                explanation: "Verdadero. Su cresta hueca funcionaba como cámara de resonancia, permitiéndole producir sonidos de baja frecuencia para comunicarse."
+            },
+            {
+                question: "¿Cuál fue el primer dinosaurio nombrado científicamente?",
+                answers: ["T-Rex", "Megalosaurus", "Iguanodon", "Velociraptor"],
+                correct: 1,
+                explanation: "El Megalosaurus fue el primer dinosaurio descrito y nombrado científicamente por William Buckland en 1824."
+            },
+            {
+                question: "¿Los saurópodos tragaban piedras?",
+                answers: ["Verdadero", "Falso"],
+                correct: 0,
+                explanation: "Verdadero. Tragaban gastrolitos (piedras estomacales) que ayudaban a moler la vegetación en su sistema digestivo."
+            },
+            {
+                question: "¿Cuánto podía medir un huevo de dinosaurio grande?",
+                answers: ["10 cm", "30 cm", "60 cm", "1 metro"],
+                correct: 1,
+                explanation: "Los huevos de dinosaurios saurópodos más grandes medían aproximadamente 30 cm de diámetro, similar a un balón de fútbol."
+            },
+            {
+                question: "¿El Giganotosaurus era más grande que el T-Rex?",
+                answers: ["Verdadero", "Falso"],
+                correct: 0,
+                explanation: "Verdadero. El Giganotosaurus era ligeramente más largo que el T-Rex, alcanzando hasta 13 metros, aunque el T-Rex era más robusto."
+            },
+            {
+                question: "¿Dónde vivieron principalmente los dinosaurios?",
+                answers: ["Solo en América", "Solo en Asia", "En todos los continentes", "Solo en Europa"],
+                correct: 2,
+                explanation: "Los dinosaurios vivieron en todos los continentes, incluyendo la Antártida, que durante el Mesozoico tenía un clima mucho más cálido."
+            },
+            {
+                question: "¿El Carnotaurus tenía brazos aún más pequeños que el T-Rex?",
+                answers: ["Verdadero", "Falso"],
+                correct: 0,
+                explanation: "Verdadero. El Carnotaurus tenía los brazos proporcionalmente más pequeños de todos los terópodos grandes, casi vestigiales."
+            },
+            {
+                question: "¿Cuántas especies de dinosaurios se han descubierto hasta ahora?",
+                answers: ["Más de 100", "Más de 300", "Más de 700", "Más de 1000"],
+                correct: 2,
+                explanation: "Se han identificado más de 700 especies diferentes de dinosaurios, y se siguen descubriendo nuevas especies regularmente."
+            },
+            {
+                question: "¿El Quetzalcoatlus era un dinosaurio?",
+                answers: ["Verdadero", "Falso"],
+                correct: 1,
+                explanation: "Falso. El Quetzalcoatlus era un pterosaurio (reptil volador), no un dinosaurio, aunque vivió en la misma época."
+            },
+            {
+                question: "¿Qué comía el Gallimimus?",
+                answers: ["Solo carne", "Solo plantas", "Omnívoro", "Solo peces"],
+                correct: 2,
+                explanation: "El Gallimimus era omnívoro, alimentándose de plantas, pequeños animales, insectos y huevos, similar a un avestruz moderno."
+            },
+            {
+                question: "¿El Styracosaurus tenía cuántos cuernos en su gola?",
+                answers: ["Dos", "Cuatro", "Seis", "Ocho"],
+                correct: 2,
+                explanation: "El Styracosaurus tenía seis cuernos largos proyectándose hacia atrás desde su gola, además del cuerno nasal."
+            },
+            {
+                question: "¿Los dinosaurios podían nadar?",
+                answers: ["Verdadero", "Falso"],
+                correct: 0,
+                explanation: "Verdadero. Algunos dinosaurios como el Spinosaurus eran semiacuáticos y nadadores competentes, mientras que otros podían nadar ocasionalmente."
+            }
+        ];
+
+        let currentQuestions = [];
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let correctAnswers = 0;
+        let incorrectAnswers = 0;
+
+        function shuffleArray(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        }
+
+        function startQuiz() {
+            currentQuestions = shuffleArray(questionsBank).slice(0, 15);
+            currentQuestionIndex = 0;
+            score = 0;
+            correctAnswers = 0;
+            incorrectAnswers = 0;
+
+            document.querySelector('.start-screen').classList.remove('active');
+            document.querySelector('.question-screen').classList.add('active');
+
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            const question = currentQuestions[currentQuestionIndex];
+            
+            document.getElementById('questionText').textContent = question.question;
+            document.getElementById('currentQuestion').textContent = currentQuestionIndex + 1;
+            document.getElementById('totalQuestions').textContent = currentQuestions.length;
+            
+            const progress = ((currentQuestionIndex) / currentQuestions.length) * 100;
+            const progressBar = document.getElementById('progressBar');
+            progressBar.style.width = progress + '%';
+            progressBar.textContent = Math.round(progress) + '%';
+
+            const answersGrid = document.getElementById('answersGrid');
+            answersGrid.innerHTML = '';
+
+            question.answers.forEach((answer, index) => {
+                const button = document.createElement('button');
+                button.className = 'answer-btn';
+                button.textContent = answer;
+                button.onclick = () => checkAnswer(index);
+                answersGrid.appendChild(button);
+            });
+
+            document.getElementById('explanation').classList.remove('show');
+            document.getElementById('nextBtn').classList.remove('show');
+        }
+
+        function checkAnswer(selectedIndex) {
+            const question = currentQuestions[currentQuestionIndex];
+            const buttons = document.querySelectorAll('.answer-btn');
+            
+            buttons.forEach(btn => btn.disabled = true);
+
+            buttons[question.correct].classList.add('correct');
+            
+            if (selectedIndex === question.correct) {
+                score++;
+                correctAnswers++;
+            } else {
+                buttons[selectedIndex].classList.add('incorrect');
+                incorrectAnswers++;
+            }
+
+            document.getElementById('explanationText').textContent = question.explanation;
+            document.getElementById('explanation').classList.add('show');
+            document.getElementById('nextBtn').classList.add('show');
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+
+            if (currentQuestionIndex < currentQuestions.length) {
+                loadQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            document.querySelector('.question-screen').classList.remove('active');
+            document.querySelector('.result-screen').classList.add('active');
+
+            const percentage = Math.round((score / currentQuestions.length) * 100);
+
+            document.getElementById('finalScore').textContent = score;
+            document.getElementById('correctCount').textContent = correctAnswers;
+            document.getElementById('incorrectCount').textContent = incorrectAnswers;
+            document.getElementById('accuracyPercent').textContent = percentage + '%';
+
+            let icon, title, message;
+
+            if (percentage >= 90) {
+                icon = '🏆';
+                title = '¡Paleontólogo Experto!';
+                message = '¡Increíble! Tienes un conocimiento excepcional sobre dinosaurios. ¡Podrías trabajar en un museo!';
+            } else if (percentage >= 75) {
+                icon = '🌟';
+                title = '¡Entusiasta Avanzado!';
+                message = '¡Excelente trabajo! Conoces muy bien el mundo de los dinosaurios. ¡Sigue aprendiendo!';
+            } else if (percentage >= 60) {
+                icon = '👍';
+                title = '¡Aficionado Competente!';
+                message = '¡Bien hecho! Tienes una base sólida. Con un poco más de estudio serás un experto.';
+            } else if (percentage >= 40) {
+                icon = '🦕';
+                title = '¡Explorador en Formación!';
+                message = 'Buen intento. Conoces lo básico, pero hay mucho más por descubrir en el mundo prehistórico.';
+            } else {
+                icon = '📚';
+                title = '¡Novato Curioso!';
+                message = 'No te desanimes. Todos empezamos desde cero. ¡Sigue explorando DinoWiki para aprender más!';
+            }
+
+            document.getElementById('resultIcon').textContent = icon;
+            document.getElementById('resultTitle').textContent = title;
+            document.getElementById('resultMessage').textContent = message;
+        }
+
+        function shareResults() {
+            const score = document.getElementById('finalScore').textContent;
+            const percentage = document.getElementById('accuracyPercent').textContent;
+            const text = `¡Obtuve ${score}/15 (${percentage}) en el Quiz Paleontológico de DinoWiki! 🦕 ¿Puedes superarme?`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Quiz Paleontológico - DinoWiki',
+                    text: text,
+                    url: window.location.href
+                }).catch(() => {
+                    fallbackShare(text);
+                });
+            } else {
+                fallbackShare(text);
+            }
+        }
+
+        function fallbackShare(text) {
+            const tempInput = document.createElement('input');
+            tempInput.value = text;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+            alert('¡Resultado copiado al portapapeles! Compártelo en tus redes sociales.');
+        }
+
+        function toggleMenu() {
+            document.getElementById('navMenu').classList.toggle('active');
+        }
+    </script>
+</body>
+</html>

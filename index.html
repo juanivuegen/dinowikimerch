@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="DinoWiki - Tu enciclopedia digital de dinosaurios. Explora el fascinante mundo de los dinosaurios del Mesozoico.">
+    <meta name="keywords" content="dinosaurios, paleontología, T-Rex, Triceratops, Velociraptor, Mesozoico">
+    <meta name="author" content="DinoWiki">
+    <link rel="icon" type="image/png" href="images/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="images/favicon.svg" />
+    <link rel="shortcut icon" href="images/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png" />
+    <link rel="manifest" href="images/site.webmanifest" />
+    <title>DinoWiki - Enciclopedia de Dinosaurios</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-green: #5a9e5a;
+            --dark-green: #3d5a3d;
+            --light-green: #7fb77f;
+            --bg-green: #e8f5e8;
+            --carnivore-red: #c94545;
+            --omnivore-gold: #d4a02d;
+            --shadow-main: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2c5f2d 0%, #1a3a1b 100%);
+            background-attachment: fixed;
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(127, 183, 127, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(127, 183, 127, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .banner {
+            background: linear-gradient(135deg, rgba(61, 90, 61, 0.98) 0%, rgba(90, 124, 90, 0.98) 100%);
+            backdrop-filter: blur(15px);
+            padding: 1rem 0;
+            box-shadow: var(--shadow-main);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 3px solid var(--light-green);
+        }
+
+        .banner-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 1rem;
+            gap: 1rem;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            animation: slideInLeft 0.8s ease-out;
+            flex-shrink: 0;
+        }
+
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .logo {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.5));
+        }
+
+        .logo:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .site-title {
+            color: #fff;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            letter-spacing: 1px;
+        }
+
+        .site-subtitle {
+            color: #d4e8d4;
+            font-size: 0.75rem;
+            font-weight: 300;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .sound-toggle {
+            background: rgba(127, 183, 127, 0.2);
+            border: 2px solid var(--light-green);
+            color: #fff;
+            padding: 0.5rem 0.8rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            white-space: nowrap;
+        }
+
+        .sound-toggle:hover {
+            background: var(--light-green);
+            transform: scale(1.05);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 4px;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+        }
+
+        .hamburger span {
+            width: 22px;
+            height: 3px;
+            background: #fff;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(6px, -6px);
+        }
+
+        nav {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            padding: 1rem 0;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            padding: 0 1rem;
+        }
+
+        nav a {
+            color: var(--dark-green);
+            text-decoration: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #f0f7f0, #e8f5e8);
+            position: relative;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        nav a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+            transition: left 0.5s ease;
+        }
+
+        nav a:hover::before {
+            left: 100%;
+        }
+
+        nav a:hover {
+            background: linear-gradient(135deg, var(--light-green), var(--primary-green));
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(127, 183, 127, 0.4);
+        }
+
+        .hero {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem 1rem;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: clamp(1.8rem, 5vw, 3rem);
+            color: #fff;
+            text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.7);
+            margin-bottom: 1rem;
+            font-family: Georgia, serif;
+        }
+
+        .hero p {
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
+            color: rgba(255, 255, 255, 0.9);
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.8;
+            padding: 0 1rem;
+        }
+
+        .quick-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1.5rem 1rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-card i {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            margin-bottom: 0.8rem;
+            color: var(--primary-green);
+        }
+
+        .stat-card h3 {
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            color: var(--dark-green);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card p {
+            color: #666;
+            font-size: clamp(0.85rem, 2vw, 0.95rem);
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.95);
+            margin-bottom: 2rem;
+            padding: 2rem 1.5rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow-main);
+        }
+
+        .section h2 {
+            text-align: center;
+            color: var(--dark-green);
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            margin-bottom: 2rem;
+            font-family: Georgia, serif;
+            border-bottom: 4px solid var(--light-green);
+            padding-bottom: 1rem;
+        }
+
+        .dino-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .dino-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .dino-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .dino-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .dino-card-content {
+            padding: 1.5rem;
+        }
+
+        .dino-card h3 {
+            color: var(--dark-green);
+            font-size: clamp(1.2rem, 3vw, 1.5rem);
+            margin-bottom: 0.5rem;
+        }
+
+        .dino-badge {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .carnivoro {
+            background: #ffe6e6;
+            color: var(--carnivore-red);
+        }
+
+        .herbivoro {
+            background: var(--bg-green);
+            color: var(--primary-green);
+        }
+
+        .omnivoro {
+            background: #fff9e6;
+            color: var(--omnivore-gold);
+        }
+
+        footer {
+            background: linear-gradient(135deg, #1a2a1a 0%, #0f1f0f 100%);
+            color: #d4e8d4;
+            padding: 3rem 1rem 1.5rem;
+            margin-top: 3rem;
+            border-top: 4px solid #7fb77f;
+            box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><path d="M0 0 L50 50 L100 0" stroke="rgba(127,183,127,0.05)" fill="none"/></svg>');
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-section h3 {
+            color: #7fb77f;
+            font-size: clamp(1.2rem, 3vw, 1.5rem);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            font-family: Georgia, serif;
+            position: relative;
+            padding-bottom: 0.8rem;
+        }
+
+        .footer-section h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(90deg, #7fb77f, transparent);
+        }
+
+        .footer-section p {
+            color: #d4e8d4;
+            line-height: 1.9;
+            font-size: clamp(0.9rem, 2vw, 1rem);
+            margin-bottom: 1rem;
+        }
+
+        .footer-section a {
+            color: #a8d5a8;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: block;
+            margin-bottom: 0.7rem;
+            padding-left: 0;
+            font-size: clamp(0.9rem, 2vw, 1rem);
+        }
+
+        .footer-section a:hover {
+            color: #7fb77f;
+            padding-left: 10px;
+            text-shadow: 0 0 10px rgba(127, 183, 127, 0.5);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .social-links a {
+            width: 45px;
+            height: 45px;
+            background: rgba(127, 183, 127, 0.15);
+            border: 2px solid #7fb77f;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-size: 1.2rem;
+            margin: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .social-links a::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: #7fb77f;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.4s ease, height 0.4s ease;
+            z-index: -1;
+        }
+
+        .social-links a:hover::before {
+            width: 100%;
+            height: 100%;
+        }
+
+        .social-links a:hover {
+            color: #1a2a1a;
+            transform: translateY(-5px) scale(1.15);
+            box-shadow: 0 8px 20px rgba(127, 183, 127, 0.5);
+            border-color: #5a9e5a;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(127, 183, 127, 0.3);
+            padding-top: 2rem;
+            margin-top: 2rem;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-bottom p {
+            color: #a8d5a8;
+            font-size: clamp(0.85rem, 2vw, 0.95rem);
+            margin: 0.7rem 0;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: #a8d5a8;
+            text-decoration: none;
+            font-size: clamp(0.85rem, 2vw, 0.95rem);
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+        }
+
+        .footer-links a:hover {
+            color: #7fb77f;
+            background: rgba(127, 183, 127, 0.1);
+            text-decoration: none;
+        }
+
+        .scroll-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--light-green), var(--primary-green));
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 1.3rem;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            z-index: 999;
+        }
+
+        .scroll-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scroll-top:hover {
+            transform: translateY(-5px) scale(1.1);
+        }
+
+        /* MEDIA QUERIES PARA RESPONSIVE */
+
+        /* Tablets grandes y pantallas medianas */
+        @media (max-width: 1024px) {
+            .banner-content {
+                padding: 0 1.5rem;
+            }
+
+            .dino-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+
+            .quick-stats {
+                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            }
+        }
+
+        /* Tablets */
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+
+            .nav-container {
+                flex-direction: column;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease;
+                padding: 0 1rem;
+            }
+
+            .nav-container.active {
+                max-height: 500px;
+                padding: 1rem;
+            }
+
+            nav a {
+                width: 100%;
+                text-align: center;
+                justify-content: center;
+            }
+
+            .logo {
+                width: 50px;
+                height: 50px;
+            }
+
+            .logo-container {
+                gap: 0.8rem;
+            }
+
+            .site-title {
+                font-size: 1.3rem;
+            }
+
+            .site-subtitle {
+                font-size: 0.7rem;
+            }
+
+            .sound-toggle {
+                padding: 0.5rem;
+                font-size: 0.8rem;
+            }
+
+            .sound-toggle span {
+                display: none;
+            }
+
+            .hero {
+                margin: 1.5rem auto;
+                padding: 1.5rem 1rem;
+            }
+
+            .section {
+                padding: 1.5rem 1rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .dino-grid {
+                grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+                gap: 1.2rem;
+            }
+
+            .quick-stats {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+
+            .stat-card {
+                padding: 1.2rem 0.8rem;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .footer-links {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+
+            .social-links {
+                justify-content: center;
+            }
+        }
+
+        /* Móviles */
+        @media (max-width: 480px) {
+            .banner {
+                padding: 0.8rem 0;
+            }
+
+            .banner-content {
+                padding: 0 0.8rem;
+                gap: 0.5rem;
+            }
+
+            .logo {
+                width: 40px;
+                height: 40px;
+            }
+
+            .logo-container {
+                gap: 0.5rem;
+            }
+
+            .site-title {
+                font-size: 1.1rem;
+            }
+
+            .site-subtitle {
+                font-size: 0.65rem;
+            }
+
+            .sound-toggle {
+                padding: 0.4rem;
+                border-radius: 20px;
+            }
+
+            .hamburger {
+                padding: 6px;
+            }
+
+            .hamburger span {
+                width: 20px;
+            }
+
+            nav {
+                padding: 0.8rem 0;
+            }
+
+            nav a {
+                padding: 0.6rem 1rem;
+                font-size: 0.95rem;
+            }
+
+            .hero {
+                margin: 1rem auto;
+                padding: 1rem 0.8rem;
+            }
+
+            main {
+                padding: 0 0.8rem;
+            }
+
+            .section {
+                padding: 1.2rem 0.8rem;
+                border-radius: 15px;
+            }
+
+            .dino-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .dino-card img {
+                height: 180px;
+            }
+
+            .dino-card-content {
+                padding: 1.2rem;
+            }
+
+            .quick-stats {
+                grid-template-columns: 1fr;
+                gap: 0.8rem;
+            }
+
+            .stat-card {
+                padding: 1rem 0.8rem;
+            }
+
+            footer {
+                padding: 2rem 0.8rem 1rem;
+            }
+
+            .social-links a {
+                width: 40px;
+                height: 40px;
+                font-size: 1.1rem;
+            }
+
+            .scroll-top {
+                width: 45px;
+                height: 45px;
+                bottom: 15px;
+                right: 15px;
+                font-size: 1.2rem;
+            }
+        }
+
+        /* Móviles muy pequeños */
+        @media (max-width: 360px) {
+            .site-title {
+                font-size: 1rem;
+            }
+
+            .site-subtitle {
+                display: none;
+            }
+
+            .quick-stats {
+                padding: 0 0.5rem;
+            }
+
+            .footer-links a {
+                padding: 0.4rem 0.8rem;
+            }
+        }
+
+        /* Landscape móvil */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .hero {
+                margin: 1rem auto;
+                padding: 1rem;
+            }
+
+            .hero h1 {
+                font-size: 1.8rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .section {
+                padding: 1.5rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="banner">
+        <div class="banner-content">
+            <div class="logo-container">
+                <div class="logo">
+                    <img src="images/logofinal.png" alt="Logo de DinoWiki">
+                </div>
+                <div>
+                    <div class="site-title">DinoWiki</div>
+                    <div class="site-subtitle">Tu Enciclopedia Digital</div>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="sound-toggle" onclick="toggleSound()">
+                    <i class="fas fa-volume-up" id="soundIcon"></i>
+                    <span id="soundText">Ambiente</span>
+                </button>
+                <div class="hamburger" onclick="toggleMenu()" id="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <nav>
+        <div class="nav-container" id="navMenu">
+            <a href="inicio.html" class="active"><i class="fas fa-home"></i> Inicio</a>
+            <a href="galeria.html"><i class="fas fa-images"></i> Dinoinfo</a>
+            <a href="descubrimientos.html"><i class="fas fa-flask"></i> Descubrimientos</a>
+            <a href="periodos.html"><i class="fas fa-history"></i> Períodos</a>
+            <a href="quiz beta.html"><i class="fas fa-question-circle"></i> Quiz</a>
+            <a href="tienda.html"><i class="fas fa-store"></i> Tienda</a>
+        </div>
+    </nav>
+
+    <div class="hero">
+        <h1>🦕 Bienvenido a DinoWiki 🦖</h1>
+        <p>Explora el fascinante mundo de los dinosaurios que dominaron la Tierra hace millones de años. Descubre sus increíbles adaptaciones, comportamientos y el legado que dejaron.</p>
+    </div>
+
+    <main>
+        <section class="section">
+            <h2>🌟 Dinosaurios Destacados</h2>
+            <div class="dino-grid" id="featuredDinos">
+                <!-- Los dinosaurios se cargarán dinámicamente -->
+            </div>
+        </section>
+        <section class="section">
+            <h2>📚 Explora por Categoría</h2>
+            <div class="dino-grid">
+                <div class="dino-card" onclick="location.href='galeria.html#carnivoros'">
+                    <img src="images/Giganoto.png" alt="Carnívoros">
+                    <a href="descubrimientos.html"></a>
+                    <div class="dino-card-content">
+                        <h3>Carnívoros 🦖</h3>
+                        <p>Los depredadores más temibles del Mesozoico</p>
+                    </div>
+                </div>
+                <div class="dino-card" onclick="location.href='galeria.html#herbivoros'">
+                    <img src="images/triceratops.jpg" alt="Herbívoros">
+                    <a href="descubrimientos.html"></a>
+                    <div class="dino-card-content">
+                        <h3>Herbívoros 🦕</h3>
+                        <p>Los gigantes gentiles que dominaron la tierra</p>
+                    </div>
+                </div>
+                <div class="dino-card" onclick="location.href='galeria.html#omnivoros'">
+                    <img src="images/Oviraptor.png" alt="Omnívoros">
+                    <a href="descubrimientos.html"></a>
+                    <div class="dino-card-content">
+                        <h3>Omnívoros 🦎</h3>
+                        <p>Los versátiles adaptados a todo tipo de dieta</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="quick-stats">
+        <div class="stat-card">
+            <i class="fas fa-dragon"></i>
+            <h3>700+</h3>
+            <p>Especies Catalogadas</p>
+        </div>
+        <div class="stat-card">
+            <i class="fas fa-clock"></i>
+            <h3>165M</h3>
+            <p>Años de Reinado</p>
+        </div>
+        <div class="stat-card">
+            <i class="fas fa-globe"></i>
+            <h3>7</h3>
+            <p>Continentes Habitados</p>
+        </div>
+        <div class="stat-card">
+            <i class="fas fa-bone"></i>
+            <h3>50K+</h3>
+            <p>Fósiles Encontrados</p>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3><i class="fas fa-book-open"></i> Sobre DinoWiki</h3>
+                <p>DinoWiki es tu enciclopedia digital dedicada al fascinante mundo de los dinosaurios. Nuestra misión es hacer accesible el conocimiento paleontológico de manera educativa, precisa y entretenida para todas las edades.</p>
+                <p style="margin-top: 1rem;"><strong>Fundada en 2025</strong></p>
+            </div>
+
+            <div class="footer-section">
+                <h3><i class="fas fa-link"></i> Enlaces Rápidos</h3>
+                <a href="inicio.html"><i class="fas fa-chevron-right"></i> Inicio</a>
+                <a href="descubrimientos.html"><i class="fas fa-chevron-right"></i> Descubrimientos</a>
+                <a href="periodos.html"><i class="fas fa-chevron-right"></i> Períodos Geológicos</a>
+                <a href="galeria.html"><i class="fas fa-chevron-right"></i> Galería</a>
+                <a href="quiz beta.html"><i class="fas fa-chevron-right"></i> Quiz</a>
+                <a href="tienda.html"><i class="fas fa-chevron-right"></i> Tienda</a>
+            </div>
+
+            <div class="footer-section">
+                <h3><i class="fas fa-share-alt"></i> Síguenos</h3>
+                <p>Únete a nuestra comunidad de entusiastas de la paleontología y mantente actualizado con los últimos descubrimientos.</p>
+                <div class="social-links">
+                    <a href="#" aria-label="Facebook" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" aria-label="Twitter" title="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href=" https://www.instagram.com/dinowikiofficial?igsh=MWtqaHNpam10MTE0bw==" aria-label="Instagram" title="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="YouTube" title="YouTube"><i class="fab fa-youtube"></i></a>
+                    <a href="#" aria-label="TikTok" title="TikTok"><i class="fab fa-tiktok"></i></a>
+                    <a href=" https://discord.gg/8fpr25htVb" aria-label="Discord" title="Discord"><i class="fab fa-discord"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h3><i class="fas fa-envelope"></i> Contacto</h3>
+                <p><i class="fas fa-map-marker-alt"></i> Mendoza, Argentina</p>
+                <p><i class="fas fa-envelope"></i> Dinowikioficial@gmail.com</p>
+                <p><i class="fas fa-phone"></i> +54 9 2613 468800</p>
+                <p style="margin-top: 1rem;"><i class="fas fa-clock"></i> Lun - Vie: 9:00 - 18:00</p>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="footer-links">
+                <a href="#">Política de Privacidad</a>
+                <a href="#">Términos de Uso</a>
+                <a href="#">Política de Cookies</a>
+                <a href="#">Aviso Legal</a>
+                <a href="#">Accesibilidad</a>
+                <a href="#">Mapa del Sitio</a>
+            </div>
+            <p style="margin-top: 1.5rem;">&copy; 2025 DinoWiki. Todos los derechos reservados.</p>
+            <p>Contenido educativo y científico | Diseñado con 🦕 pasión por la paleontología</p>
+        </div>
+    </footer>
+
+    <button class="scroll-top" id="scrollTop" onclick="scrollToTop()">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <audio id="ambientSound" loop>
+        <source src="sounds/track1.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        // Base de datos temporal de dinosaurios
+        const dinosaursDB = [
+            {
+                name: "Tyrannosaurus Rex",
+                diet: "carnivoro",
+                period: "Cretácico Superior",
+                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBfogdo9B0YoT2VuautybBBHi7jElpm8iADQ&s=w400",
+                description: "El rey de los dinosaurios carnívoros"
+            },
+            {
+                name: "Triceratops",
+                diet: "herbivoro",
+                period: "Cretácico Superior",
+                image: "images/triceratops.jpg",
+                description: "Famoso por sus tres cuernos"
+            },
+            {
+                name: "Velociraptor",
+                diet: "carnivoro",
+                period: "Cretácico Superior",
+                image: "images/velociraptor.jpg",
+                description: "Inteligente y ágil cazador"
+            },
+            {
+                name: "Stegosaurus",
+                diet: "herbivoro",
+                period: "Jurásico Superior",
+                image: "images/stegosaurus.jpg",
+                description: "Reconocible por sus placas dorsales"
+            },
+            {
+                name: "Oviraptor",
+                diet: "omnivoro",
+                period: "Cretácico Superior",
+                image: "images/oviraptor.jpg",
+                description: "Versátil en su alimentación"
+            },
+            {
+                name: "Brachiosaurus",
+                diet: "herbivoro",
+                period: "Jurásico Superior",
+                image: "images/brachiosaurus.jpg",
+                description: "Uno de los dinosaurios más altos"
+            }
+        ];
+
+        // Cargar dinosaurios destacados
+        function loadFeaturedDinos() {
+            const container = document.getElementById('featuredDinos');
+            container.innerHTML = dinosaursDB.map(dino => `
+                <div class="dino-card">
+                    <img src="${dino.image}" alt="${dino.name}" loading="lazy">
+                    <div class="dino-card-content">
+                        <span class="dino-badge ${dino.diet}">${dino.diet.charAt(0).toUpperCase() + dino.diet.slice(1)}</span>
+                        <h3>${dino.name}</h3>
+                        <p>${dino.description}</p>
+                        <p style="font-size: 0.85rem; color: #666; margin-top: 0.5rem;">
+                            <i class="fas fa-clock"></i> ${dino.period}
+                        </p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Sonido ambiente
+        let isPlaying = false;
+        const audio = document.getElementById('ambientSound');
+        audio.volume = 0.3;
+
+        function toggleSound() {
+            const icon = document.getElementById('soundIcon');
+            const text = document.getElementById('soundText');
+            
+            if (!isPlaying) {
+                audio.play();
+                icon.className = 'fas fa-volume-up';
+                text.textContent = 'Sonando';
+                isPlaying = true;
+            } else {
+                audio.pause();
+                icon.className = 'fas fa-volume-mute';
+                text.textContent = 'Silencio';
+                isPlaying = false;
+            }
+        }
+
+        // Toggle menú móvil
+        function toggleMenu() {
+            const navMenu = document.getElementById('navMenu');
+            const hamburger = document.getElementById('hamburger');
+            navMenu.classList.toggle('active');
+            hamburger.classList.toggle('active');
+        }
+
+        // Cerrar menú al hacer clic en un enlace (móvil)
+        document.querySelectorAll('.nav-container a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                    const navMenu = document.getElementById('navMenu');
+                    const hamburger = document.getElementById('hamburger');
+                    navMenu.classList.remove('active');
+                    hamburger.classList.remove('active');
+                }
+            });
+        });
+
+        // Scroll to top
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Mostrar botón scroll
+        window.addEventListener('scroll', () => {
+            const btn = document.getElementById('scrollTop');
+            if (window.pageYOffset > 300) {
+                btn.classList.add('visible');
+            } else {
+                btn.classList.remove('visible');
+            }
+        });
+
+        // Smooth scroll para enlaces internos
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', () => {
+            loadFeaturedDinos();
+        });
+
+        // Cerrar menú móvil al cambiar tamaño de ventana
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                if (window.innerWidth > 768) {
+                    const navMenu = document.getElementById('navMenu');
+                    const hamburger = document.getElementById('hamburger');
+                    navMenu.classList.remove('active');
+                    hamburger.classList.remove('active');
+                }
+            }, 250);
+        });
+    </script>
+</body>
+</html>
